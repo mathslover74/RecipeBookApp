@@ -1,17 +1,42 @@
 import React from "react";
-import { Switch, Route} from "react-router-dom";
+import { Switch, Route, Redirect} from "react-router-dom";
 import SignIn from '.././components/SignIn'
 import Dashboard from "../components/Dashboard";
 import SignUp from '../components/SignUp';
+import AuthAPI from "../utils/AuthAPI";
 
 function Routes(){
   return(
     <Switch>
-      <Route path='/signin' component={SignIn}/>
-      <Route path='/signup' component={SignUp}/>
-      <Route path='/dashboard' component={Dashboard}/>
+      <RouteReg path='/signin' component={SignIn}/>
+      <RouteReg path='/signup' component={SignUp}/>
+      <RouteProtected path='/dashboard' component={Dashboard}/>
     </Switch>
   )
+}
+
+const RouteReg =({component: Component, ...rest}) => {
+  const authApi = React.useContext(AuthAPI);
+  return (
+    <Route
+      {...rest} 
+      render = {props => 
+        !authApi.auth ? <Component {...props}/> : <Redirect to='/dashboard'/>
+      } 
+    />
+  );
+}
+
+const RouteProtected =({component: Component, ...rest}) => {
+  const authApi = React.useContext(AuthAPI);
+  return (
+    <Route
+      {...rest} 
+      render = {props => 
+        authApi.auth ? <Component {...props}/> : <Redirect to='/signin'/>
+      } 
+    />
+  );
 }
 
 export default Routes;
