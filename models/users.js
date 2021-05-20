@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
   username: { type: String },
@@ -18,13 +19,28 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.statics.findUser = async function (username, password) {
-  const user = await User.findOne({ username, password });
-  if (user) {
-    return user;
-  } else {
-    return;
+  const user = await User.findOne({ username });
+  if (!user) {
+    /// if no user return
+    return; ///need input
   }
+
+  const isMatch = await bcrypt.compare(password, user.password); /// compare user with user.password
+  if (!isMatch) {
+    /// if password not match
+    return; /// need return error
+  }
+  return user;
 };
+
+///middleware
+userSchema.pre("save", async function (next) {
+  const user = this;
+  if (user.isModified("password")) {
+    user.password = await bcrypt.hash(user.password, 10);
+  }
+  next();
+});
 
 const User = mongoose.model("User", userSchema);
 
