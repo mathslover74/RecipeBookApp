@@ -12,6 +12,7 @@ router.post("/signin", async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findUser(username, password);
   if (user) {
+    req.session.user = user._id;
     res.json({
       message: "you are successfully login",
       auth: true,
@@ -27,6 +28,7 @@ router.post("/signin", async (req, res) => {
 
 router.post("/signup", (req, res) => {
   const user = new User(req.body);
+  req.session.user = user._id;
   user
     .save()
     .then((result) => {
@@ -41,6 +43,19 @@ router.post("/signup", (req, res) => {
         auth: false,
       });
     });
+});
+
+router.get("/hassign", (req, res) => {
+  if (req.session.user) {
+    return res.json({
+      auth: true,
+      message: "your are sign in",
+    });
+  }
+  return res.json({
+    authi: false,
+    message: "you are not login",
+  });
 });
 
 module.exports = router;
