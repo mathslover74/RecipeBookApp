@@ -10,4 +10,14 @@ const signup = async (user) => {
   return result;
 };
 
-export { signin, signup };
+const hasSignned = async () => {
+  const result = await axios.get("users/hassign");
+  return result;
+};
+
+const signout = async () => {
+  const result = await axios.get("users/signout");
+  return result;
+};
+
+export { signin, signup, hasSignned, signout };

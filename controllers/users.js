@@ -58,4 +58,11 @@ router.get("/hassign", (req, res) => {
   });
 });
 
+router.get("/signout", (req, res) => {
+  req.session.destroy();
+  res.json({
+    auth: false,
+  });
+});
+
 module.exports = router;
