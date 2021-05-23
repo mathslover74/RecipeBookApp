@@ -15,6 +15,8 @@ const path = require("path");
 
 //Controller
 const usersController = require("./controllers/users");
+const recipesController = require("./controllers/recipes");
+
 const bodyParser = require("body-parser");
 
 // Middleware
@@ -49,5 +51,6 @@ db.on("disconnected", () => console.log("mongo disconnected"));
 
 //Routes
 app.use("/users", usersController);
+app.use("/recipes", recipesController);
 
 app.listen(PORT, () => console.log("server is running on port", PORT));

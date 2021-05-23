@@ -2,9 +2,15 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/users");
 
+// router.get("/", (req, res) => {
+//   res.json({
+//     msg: "hello",
+//   });
+
+///find all users
 router.get("/", (req, res) => {
-  res.json({
-    msg: "hello",
+  User.find({}, (err, foundUsers) => {
+    res.json(foundUsers);
   });
 });
 

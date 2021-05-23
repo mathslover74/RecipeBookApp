@@ -11,8 +11,14 @@ function Dashboard() {
   }
   return(
     <div>
-      <h1>Dashboard</h1>
-      <button onClick={handleLogout}>Logout</button>
+      <div className= 'topNav'>
+        <h1>Dashboard</h1>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+
+      <div className="create-recipe">
+        
+      </div>
     </div>
   )
 }
