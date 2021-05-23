@@ -3,6 +3,7 @@ import { Switch, Route, Redirect} from "react-router-dom";
 import SignIn from '.././components/SignIn'
 import Dashboard from "../components/Dashboard";
 import SignUp from '../components/SignUp';
+import  NewRecipe from '../components/NewRecipe';
 import AuthAPI from "../utils/AuthAPI";
 
 function Routes(){
@@ -10,6 +11,7 @@ function Routes(){
     <Switch>
       <RouteReg path='/signin' component={SignIn}/>
       <RouteReg path='/signup' component={SignUp}/>
+      <RouteReg path='/recipe/new' component={NewRecipe}/>
       <RouteProtected path='/dashboard' component={Dashboard}/>
     </Switch>
   )
