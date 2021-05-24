@@ -69,6 +69,14 @@ export default function NewRecipe() {
   const [submitted, setSubmitted] = useState(false)
   // const [valid, setValid]=useState(false)
 
+
+  // cinst addRecipe = async () => {
+  //   try {
+  //     await axios.put(`/recipe`)
+
+  //   }
+  // }
+
   const handleSubmit = (event) => {
     event.preventDefault();
       // if(values.recipeName){
@@ -103,7 +111,7 @@ export default function NewRecipe() {
                 required
                 fullWidth
                 id="recipeName"
-                label="recipeName"
+                label="Recipe Name"
                 name="recipeName"
                 onChange ={handleOnChange}
               />
@@ -141,7 +149,7 @@ export default function NewRecipe() {
                 required
                 fullWidth
                 name="preTime"
-                label="preTime"
+                label="Preparation Time (Min)"
                 type="preTime"
                 id="preTime"
                 onChange ={handleOnChange}
@@ -154,7 +162,7 @@ export default function NewRecipe() {
                 required
                 fullWidth
                 name="cookTime"
-                label="cookTime"
+                label="Cook Time (Min)"
                 type="cookTime"
                 id="cookTime"
                 onChange ={handleOnChange}
@@ -167,7 +175,7 @@ export default function NewRecipe() {
                 required
                 fullWidth
                 name="ingredients"
-                label="ingredients"
+                label="Ingredients"
                 type="ingredients"
                 id="ingredients"
                 onChange ={handleOnChange}
@@ -180,7 +188,7 @@ export default function NewRecipe() {
                 required
                 fullWidth
                 name="servings"
-                label="servings"
+                label="Number of Servings"
                 type="servings"
                 id="servings"
                 onChange ={handleOnChange}
@@ -193,7 +201,7 @@ export default function NewRecipe() {
                 required
                 fullWidth
                 name="instruction"
-                label="instruction"
+                label="Instruction/Steps"
                 type="instruction"
                 id="instruction"
                 onChange ={handleOnChange}
