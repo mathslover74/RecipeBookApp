@@ -10,7 +10,7 @@ const recipeSchema = new mongoose.Schema({
   // }
   preTime: Number,
   cookTime: Number,
-  ingredients: [String], ///with check box for future
+  ingredients: String, ///with check box for future with array
   servings: Number,
   instruction: String,
 

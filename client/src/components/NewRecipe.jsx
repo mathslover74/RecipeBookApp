@@ -1,19 +1,15 @@
 import React, { useState, useContext } from 'react';
-import Avatar from '@material-ui/core/Avatar';
+
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {signup} from './auth-api'
 import AuthApi from '../utils/AuthAPI';
+const axios = require('axios');
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,6 +42,7 @@ export default function NewRecipe() {
     servings:'',
     instruction:'',
   })
+
   // const [recipeName, setRecipeName] = useState();
   // const [img, setImg] = useState();
   // const [createdBy, setCreatedBy] = useState();
@@ -57,25 +54,99 @@ export default function NewRecipe() {
   const classes = useStyles();
   const authApi = useContext(AuthApi)
 
+  // function handleNameChange(e) {
+  //   setRecipeName(e.target.value)
+  // }
+  // function handleImgChange(e) {
+  //   setImg(e.target.value)
+  // }
+  // function handleCreatedByChange(e) {
+  //   setCreatedBy(e.target.value)
+  // }
+  // function handlePreTimeChange(e) {
+  //   setPreTime(e.target.value)
+  // }
+  // function handleChange(e) {
+  //   setCookTime(e.target.value)
+  // }
+  // function handleNameChange(e) {
+  //   setRecipeName(e.target.value)
+  // }
+  // function handleNameChange(e) {
+  //   setRecipeName(e.target.value)
+  // }
+  // function handleNameChange(e) {
+  //   setRecipeName(e.target.value)
+  // }
 
-  const handleOnChange = (e) => {
-    if(e.target.username === ' username'){
-      // setUsername(e.target.value)
-    }else {
-      // setPassword(e.target.value)
-    }
-  }
+  // const handleOnChange = (e) => {
+  //   if(e.target.username === ' username'){
+  //     // setUsername(e.target.value)
+  //   }else {
+  //     // setPassword(e.target.value)
+  //   }
+  // }
+
+  function handleOnChange(e){
+    setValues( prevState => ({ ...prevState, ...{[e.target.name] : e.target.value}}))
+ }
+  
+
+  // const handleOnChange = (e) => {
+  //   if(e.target.recipeName === 'recipeName'){
+  //     setRecipeName(e.target.value)
+  //   }
+
+  //   if(e.target.img === 'img'){
+  //     setImg(e.target.value)
+  //   }
+
+  //   if(e.target.createBy === 'createdBy'){
+  //     setCreatedBy(e.target.value)
+  //   }
+
+  //   if(e.target.preTime === 'preTime'){
+  //     setPreTime(e.target.value)
+  //   }
+
+  //   if(e.target.cookTime === 'cookTime'){
+  //     setCookTime(e.target.value)
+  //   }
+
+  //   if(e.target.ingredients === 'ingredients'){
+  //     setIngredients(e.target.value)
+  //   }
+
+  //   if(e.target.servings === 'servings'){
+  //     setServing(e.target.value)
+  //   }
+
+  //   if(e.target.instruction === 'instruction'){
+  //     setInstruction(e.target.value)
+  //   }
+
+  // }
 
   const [submitted, setSubmitted] = useState(false)
   // const [valid, setValid]=useState(false)
 
 
-  // cinst addRecipe = async () => {
-  //   try {
-  //     await axios.put(`/recipe`)
-
-  //   }
-  // }
+  const addRecipe = async () => {
+    try {
+      await axios.put(`/recipe/create`, {
+        recipeName: values.setRecipeName,
+        img: values.setImg,
+        createdBy: values.setCreatedBy,
+        preTime: values.setPreTime,
+        cookTime: values.setCookTime,
+        ingredients: values.setIngredients,
+        serving: values.setServing,
+        instruction: values.setIngredients
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -83,7 +154,8 @@ export default function NewRecipe() {
       //   setValid(true)
       // } 
       setSubmitted(true)
-      console.log(values)
+      // console.log({recipeName})
+      // console.log(values)
     }
 
   //   const handleSignUp = async (e) =>{
@@ -105,7 +177,6 @@ export default function NewRecipe() {
           {submitted ? <div className="success-message">Succesfully Created!</div> : null}
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <label>Recipe name</label>
               <TextField
                 variant="outlined"
                 required
