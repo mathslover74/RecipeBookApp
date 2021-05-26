@@ -11,8 +11,8 @@ function Routes(){
     <Switch>
       <RouteReg path='/signin' component={SignIn}/>
       <RouteReg path='/signup' component={SignUp}/>
-      <RouteReg path='/recipe/new' component={NewRecipe}/>
       <RouteProtected path='/dashboard' component={Dashboard}/>
+      <RouteProtected path='/recipe/new' component={NewRecipe}/>
     </Switch>
   )
 }
