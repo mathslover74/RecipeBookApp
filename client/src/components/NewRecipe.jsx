@@ -133,16 +133,18 @@ export default function NewRecipe() {
 
   const addRecipe = async () => {
     try {
-      await axios.put(`/recipe/create`, {
-        recipeName: values.setRecipeName,
-        img: values.setImg,
-        createdBy: values.setCreatedBy,
-        preTime: values.setPreTime,
-        cookTime: values.setCookTime,
-        ingredients: values.setIngredients,
-        serving: values.setServing,
-        instruction: values.setIngredients
-      })
+      const response = await axios.post(`/recipes/create`, {
+        recipeName: values.recipeName,
+        img: values.img,
+        createdBy: values.createdBy,
+        preTime: values.preTime,
+        cookTime: values.cookTime,
+        ingredients: values.ingredients,
+        serving: values.serving,
+        instruction: values.instruction
+      });
+      console.log(JSON.stringify(values.RecipeName))
+      console.log(response)
     } catch (err) {
       console.log(err)
     }
@@ -154,8 +156,9 @@ export default function NewRecipe() {
       //   setValid(true)
       // } 
       setSubmitted(true)
+      addRecipe();
       // console.log({recipeName})
-      // console.log(values)
+      console.log(values)
     }
 
   //   const handleSignUp = async (e) =>{
