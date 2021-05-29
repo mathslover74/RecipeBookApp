@@ -2,6 +2,7 @@ import React from 'react';
 import AuthApi from '../utils/AuthAPI'
 import {signout} from '../components/auth-api'
 import { Link } from 'react-router-dom';
+import TopNav from './TopNav'
 
 function Dashboard() {
   const authApi = React.useContext(AuthApi);
@@ -14,6 +15,7 @@ function Dashboard() {
 
   return(
     <div>
+      <TopNav />
       <div className= 'topNav'>
         <h1>Dashboard</h1>
         <button onClick={handleLogout}>Logout</button>

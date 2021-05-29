@@ -4,6 +4,7 @@ import SignIn from '.././components/SignIn'
 import Dashboard from "../components/Dashboard";
 import SignUp from '../components/SignUp';
 import  NewRecipe from '../components/NewRecipe';
+import UpdateRecipe from '../components/UpdateRecipe'
 import AuthAPI from "../utils/AuthAPI";
 
 function Routes(){
@@ -11,6 +12,7 @@ function Routes(){
     <Switch>
       <RouteReg path='/signin' component={SignIn}/>
       <RouteReg path='/signup' component={SignUp}/>
+      <RouteReg path='/recipe/update' component={UpdateRecipe}/>
       <RouteProtected path='/dashboard' component={Dashboard}/>
       <RouteProtected path='/recipe/new' component={NewRecipe}/>
     </Switch>

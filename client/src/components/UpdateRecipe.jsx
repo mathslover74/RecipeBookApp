@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,16 +10,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import AuthApi from '../utils/AuthAPI';
 const axios = require('axios');
-
-const fetchUserID = async() => {
-  try{
-    const fetchUserID = await fetch ('/users/profile');
-    const userID = await fetchUserID.json();
-    console.log(userID)
-  } catch (err) {
-    console.log(err)
-  }
-}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -41,12 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NewRecipe({match}) {
-  useEffect(() => {
-    fetchUserID();
-  },[]);
-
-
+export default function UpdateRecipe() {
   const [values, setValues] = useState( {
     recipeName:'',
     img:'',
@@ -58,103 +43,20 @@ export default function NewRecipe({match}) {
     instruction:'',
   })
 
-  // const [recipeName, setRecipeName] = useState();
-  // const [img, setImg] = useState();
-  // const [createdBy, setCreatedBy] = useState();
-  // const [preTime, setPreTime] = useState();
-  // const [cookTime, setCookTime] = useState();
-  // const [ingredients, setIngredients] = useState();
-  // const [serving, setServing] = useState();
-  // const [instruction, setInstruction] = useState();
+
   const classes = useStyles();
-  const authApi = React.useContext(AuthApi);
-  
+  const authApi = useContext(AuthApi)
 
-
-  // function handleNameChange(e) {
-  //   setRecipeName(e.target.value)
-  // }
-  // function handleImgChange(e) {
-  //   setImg(e.target.value)
-  // }
-  // function handleCreatedByChange(e) {
-  //   setCreatedBy(e.target.value)
-  // }
-  // function handlePreTimeChange(e) {
-  //   setPreTime(e.target.value)
-  // }
-  // function handleChange(e) {
-  //   setCookTime(e.target.value)
-  // }
-  // function handleNameChange(e) {
-  //   setRecipeName(e.target.value)
-  // }
-  // function handleNameChange(e) {
-  //   setRecipeName(e.target.value)
-  // }
-  // function handleNameChange(e) {
-  //   setRecipeName(e.target.value)
-  // }
-
-  // const handleOnChange = (e) => {
-  //   if(e.target.username === ' username'){
-  //     // setUsername(e.target.value)
-  //   }else {
-  //     // setPassword(e.target.value)
-  //   }
-  // }
 
   function handleOnChange(e){
     setValues( prevState => ({ ...prevState, ...{[e.target.name] : e.target.value}}))
  }
-  
 
-  // const handleOnChange = (e) => {
-  //   if(e.target.recipeName === 'recipeName'){
-  //     setRecipeName(e.target.value)
-  //   }
 
-  //   if(e.target.img === 'img'){
-  //     setImg(e.target.value)
-  //   }
-
-  //   if(e.target.createBy === 'createdBy'){
-  //     setCreatedBy(e.target.value)
-  //   }
-
-  //   if(e.target.preTime === 'preTime'){
-  //     setPreTime(e.target.value)
-  //   }
-
-  //   if(e.target.cookTime === 'cookTime'){
-  //     setCookTime(e.target.value)
-  //   }
-
-  //   if(e.target.ingredients === 'ingredients'){
-  //     setIngredients(e.target.value)
-  //   }
-
-  //   if(e.target.servings === 'servings'){
-  //     setServing(e.target.value)
-  //   }
-
-  //   if(e.target.instruction === 'instruction'){
-  //     setInstruction(e.target.value)
-  //   }
-
-  // }
 
   const [submitted, setSubmitted] = useState(false)
   // const [valid, setValid]=useState(false)
 
-  const fetchUserData = async () => {
-    const response = await fetch(`/users/profile/${match.params.userid}`);
-    const jsonedResponse = await response.json();
-    // values.createdBy(jsonedResponse.username);
-    console.log(jsonedResponse)
-    return(jsonedResponse.username)
-
-  };
 
   const addRecipe = async () => {
     try {
@@ -199,16 +101,18 @@ export default function NewRecipe({match}) {
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
-         Create New Recipe
+         Update Recipe
         </Typography>
         <form className={classes.form} noValidate>
           {submitted ? <div className="success-message">Succesfully Created!</div> : null}
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+              
                 variant="outlined"
                 required
                 fullWidth
+                value='hello'
                 id="recipeName"
                 label="Recipe Name"
                 name="recipeName"
@@ -221,6 +125,7 @@ export default function NewRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
+                value='hello'
                 name="img"
                 label="img"
                 type="img"
@@ -234,7 +139,7 @@ export default function NewRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value ={fetchUserData()}
+                type='hidden'
                 name="createdBy"
                 label="createdBy"
                 type="createdBy"
@@ -319,7 +224,7 @@ export default function NewRecipe({match}) {
             onClick={handleSubmit}
 
           >
-            Post New Recipe
+           Update Recipe
           </Button>
           <Grid container justify="flex-end">
           </Grid>

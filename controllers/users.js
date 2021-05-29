@@ -71,4 +71,16 @@ router.get("/signout", (req, res) => {
   });
 });
 
+///get user id
+router.get("/profile", async (req, res) => {
+  let userdata = req.session.user;
+  res.json(userdata);
+});
+
+router.get("/profile/:userid", (req, res) => {
+  User.findById(req.params.userid, (err, foundUser) => {
+    res.json(foundUser);
+  });
+});
+
 module.exports = router;
