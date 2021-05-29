@@ -160,16 +160,13 @@ export default function NewRecipe({match}) {
   // };
 
   const fetchUserData = async () => {
-    // // try {
-      console.log(match.params.userid)
+    // // try 
       console.log(await fetchUserID())
       axios.get(`/users/profile/${await fetchUserID()}`)
       .then((res)=>{
         console.log(res.data)
         setValues(prevState => ({...prevState, createdBy : res.data.username}))
         console.log('......')
-   
-        // return(res.data.username)
       })
       .catch(err => console.log(err))
 
@@ -252,7 +249,7 @@ export default function NewRecipe({match}) {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
@@ -264,7 +261,7 @@ export default function NewRecipe({match}) {
                 id="createdBy"
                 onChange ={handleOnChange}
               />
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={6}>
               <TextField
