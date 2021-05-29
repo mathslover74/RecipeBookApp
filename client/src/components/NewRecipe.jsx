@@ -16,6 +16,7 @@ const fetchUserID = async() => {
     const fetchUserID = await fetch ('/users/profile');
     const userID = await fetchUserID.json();
     console.log(userID)
+    return userID
   } catch (err) {
     console.log(err)
   }
@@ -43,7 +44,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NewRecipe({match}) {
   useEffect(() => {
-    fetchUserID();
+    // fetchUserID();
+    fetchUserData()
   },[]);
 
 
@@ -145,16 +147,37 @@ export default function NewRecipe({match}) {
   // }
 
   const [submitted, setSubmitted] = useState(false)
+
+
   // const [valid, setValid]=useState(false)
 
-  const fetchUserData = async () => {
-    const response = await fetch(`/users/profile/${match.params.userid}`);
-    const jsonedResponse = await response.json();
-    // values.createdBy(jsonedResponse.username);
-    console.log(jsonedResponse)
-    return(jsonedResponse.username)
+  // const fetchUserData = async () => {
+  //   const response = await fetch(`/users/profile/${match.params.userid}`);
+  //   const jsonedResponse = response.json();
+  //   // values.createdBy(jsonedResponse.username);
+  //   console.log(jsonedResponse)
+  //   return(jsonedResponse.username)
+  // };
 
-  };
+  const fetchUserData = async () => {
+    // // try {
+      console.log(match.params.userid)
+      console.log(await fetchUserID())
+      axios.get(`/users/profile/${await fetchUserID()}`)
+      .then((res)=>{
+        console.log(res.data)
+        setValues(prevState => ({...prevState, createdBy : res.data.username}))
+        console.log('......')
+   
+        // return(res.data.username)
+      })
+      .catch(err => console.log(err))
+
+    // } 
+  }
+
+  console.log(values)
+
 
   const addRecipe = async () => {
     try {
@@ -234,7 +257,7 @@ export default function NewRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value ={fetchUserData()}
+                value ={values.createdBy}
                 name="createdBy"
                 label="createdBy"
                 type="createdBy"
