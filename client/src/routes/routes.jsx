@@ -6,16 +6,27 @@ import SignUp from '../components/SignUp';
 import  NewRecipe from '../components/NewRecipe';
 import UpdateRecipe from '../components/UpdateRecipe'
 import AuthAPI from "../utils/AuthAPI";
+import TopNav from '../components/TopNav'
 
 function Routes(){
   return(
     <Switch>
-      <RouteReg path='/signin' component={SignIn}/>
+      <RouteReg path='/signin' component={() => withLayout(SignIn)}/>
       <RouteReg path='/signup' component={SignUp}/>
       <RouteReg path='/recipe/update' component={UpdateRecipe}/>
       <RouteProtected path='/dashboard' component={Dashboard}/>
       <RouteProtected path='/recipe/new' component={NewRecipe}/>
     </Switch>
+  )
+}
+
+// Higher order component
+function withLayout(WrappedComponent) {
+  return (
+    <>
+          <TopNav />
+         <WrappedComponent />
+    </>
   )
 }
 
@@ -44,3 +55,37 @@ const RouteProtected =({component: Component, ...rest}) => {
 }
 
 export default Routes;
+
+
+// function GrandChild() {
+//   const { auth, setAuth } = React.useContext(MochiContext)
+//   return (
+//     <>
+//      <button onClick={() => setAuth(!auth)}>change auth value</button>
+//      {String(auth)}
+//     </>
+//   )
+// }
+
+// const MochiContext = React.createContext({ auth: false, setAuth: () => {} })
+
+// function Child() {
+//   // const { mochi } = React.useContext(MochiContext)
+//   return (
+//     <>
+//     {/* {mochi} */}
+//      child
+//       <GrandChild />
+//     </>
+//   )
+// }
+
+
+// export function Parent() {
+//   const [ auth, setAuth ] = React.useState(false)
+//   return (
+//     <MochiContext.Provider value={{ auth, setAuth }}>
+//      <Child />
+//     </MochiContext.Provider>
+//   )
+// }
