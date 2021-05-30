@@ -1,5 +1,11 @@
-import React, { useState, useContext } from 'react';
-
+import React, { useState, useContext, useEffect } from 'react';
+// import {
+//   BrowserRouter as Router,
+//   Switch,
+//   Route,
+//   useParams
+// } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -31,26 +37,47 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UpdateRecipe() {
-  const [values, setValues] = useState( {
-    recipeName:'',
-    img:'',
-    createdBy:'',
-    preTime:'',
-    cookTime:'',
-    ingredients:'',
-    servings:'',
-    instruction:'',
-  })
+// function recipeID() {
+//   let { recipeID } = useParams();
+//   return <div>Now showing post {recipeID}</div>;
+// }
 
+// const fetchRecipe = () => {
+//   const { recipeID } = useParams()
+//   return <div>{recipeID}</div>
+// }
+
+
+
+export default function UpdateRecipe({match}) {
+
+// const { id } = useParams();
+
+
+  useEffect(()=>{
+    // console.log(JSON.stringify({id}))
+    fetchOneRecipe();
+  },[])
+  
+  const[recipe, getRecipe] = useState('');
+
+  const fetchOneRecipe = async () => {
+    // console.log({id})
+    // axios.get(`/recipes/60abba232d26b32014c74bb1`)
+    axios.get(`/recipes/${match.params.id}`)
+    .then((res)=>{
+      console.log(res)
+    })
+    .catch(err => console.log(err))
+  }
 
   const classes = useStyles();
   const authApi = useContext(AuthApi)
 
 
-  function handleOnChange(e){
-    setValues( prevState => ({ ...prevState, ...{[e.target.name] : e.target.value}}))
- }
+//   function handleOnChange(e){
+//     setValues( prevState => ({ ...prevState, ...{[e.target.name] : e.target.value}}))
+//  }
 
 
 
@@ -58,34 +85,14 @@ export default function UpdateRecipe() {
   // const [valid, setValid]=useState(false)
 
 
-  const addRecipe = async () => {
-    try {
-      const response = await axios.post(`/recipes/create`, {
-        recipeName: values.recipeName,
-        img: values.img,
-        createdBy: values.createdBy,
-        preTime: values.preTime,
-        cookTime: values.cookTime,
-        ingredients: values.ingredients,
-        serving: values.serving,
-        instruction: values.instruction
-      });
-      console.log(JSON.stringify(values.RecipeName))
-      console.log(response)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   const handleSubmit = (event) => {
     event.preventDefault();
       // if(values.recipeName){
       //   setValid(true)
       // } 
+      // console.log(match.params.id)
       setSubmitted(true)
-      addRecipe();
-      // console.log({recipeName})
-      console.log(values)
+
     }
 
   //   const handleSignUp = async (e) =>{
@@ -116,7 +123,7 @@ export default function UpdateRecipe() {
                 id="recipeName"
                 label="Recipe Name"
                 name="recipeName"
-                onChange ={handleOnChange}
+                // onChange ={handleOnChange}
               />
               {/* {submitted && values.recipeName==='' ? <span>Please enter Recipe Name</span> : null} */}
             </Grid>
@@ -130,7 +137,7 @@ export default function UpdateRecipe() {
                 label="img"
                 type="img"
                 id="img"
-                onChange ={handleOnChange}
+                // onChange ={handleOnChange}
               />
             </Grid>
 
@@ -144,7 +151,7 @@ export default function UpdateRecipe() {
                 label="createdBy"
                 type="createdBy"
                 id="createdBy"
-                onChange ={handleOnChange}
+                // onChange ={handleOnChange}
               />
             </Grid>
 
@@ -157,7 +164,7 @@ export default function UpdateRecipe() {
                 label="Preparation Time (Min)"
                 type="preTime"
                 id="preTime"
-                onChange ={handleOnChange}
+                // onChange ={handleOnChange}
               />
             </Grid>
 
@@ -170,7 +177,7 @@ export default function UpdateRecipe() {
                 label="Cook Time (Min)"
                 type="cookTime"
                 id="cookTime"
-                onChange ={handleOnChange}
+                // onChange ={handleOnChange}
               />
             </Grid>
 
@@ -183,7 +190,7 @@ export default function UpdateRecipe() {
                 label="Ingredients"
                 type="ingredients"
                 id="ingredients"
-                onChange ={handleOnChange}
+                // onChange ={handleOnChange}
               />
             </Grid>
 
@@ -196,7 +203,7 @@ export default function UpdateRecipe() {
                 label="Number of Servings"
                 type="servings"
                 id="servings"
-                onChange ={handleOnChange}
+                // onChange ={handleOnChange}
               />
             </Grid>
 
@@ -209,7 +216,7 @@ export default function UpdateRecipe() {
                 label="Instruction/Steps"
                 type="instruction"
                 id="instruction"
-                onChange ={handleOnChange}
+                // onChange ={handleOnChange}
               />
             </Grid>
             
@@ -234,4 +241,6 @@ export default function UpdateRecipe() {
       </Box>
     </Container>
   );
+
+  return <>(UpdateRecipe()) </>
 }

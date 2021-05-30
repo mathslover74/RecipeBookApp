@@ -39,7 +39,7 @@ app.use(
 // Database
 mongoose.connect(
   mongoURI,
-  { useNewUrlParser: true, useUnifiedTopolog: true },
+  { useNewUrlParser: true, useUnifiedTopolog: true, useCreateIndex: true },
   () => {
     console.log("MongoDB connection establish,");
   }
