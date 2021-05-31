@@ -37,18 +37,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// function recipeID() {
-//   let { recipeID } = useParams();
-//   return <div>Now showing post {recipeID}</div>;
-// }
-
-// const fetchRecipe = () => {
-//   const { recipeID } = useParams()
-//   return <div>{recipeID}</div>
-// }
-
-
-
 export default function UpdateRecipe({match}) {
 
 // const { id } = useParams();
@@ -60,48 +48,61 @@ export default function UpdateRecipe({match}) {
   },[])
   
   const[recipe, getRecipe] = useState('');
+  console.log(match.params)
 
   const fetchOneRecipe = async () => {
     // console.log({id})
     // axios.get(`/recipes/60abba232d26b32014c74bb1`)
     axios.get(`/recipes/${match.params.id}`)
     .then((res)=>{
-      console.log(res)
+      // console.log(res.data)
+      getRecipe(res.data)
     })
     .catch(err => console.log(err))
   }
+
+  const modifiedRecipe = async () => {
+    try {
+      const response = await axios.put(`/recipes/${match.params.id}`, {
+        recipeName: recipe.recipeName,
+        img: recipe.img,
+        createdBy: recipe.createdBy,
+        preTime: recipe.preTime,
+        cookTime: recipe.cookTime,
+        ingredients: recipe.ingredients,
+        serving: recipe.serving,
+        instruction: recipe.instruction
+      });
+      console.log(JSON.stringify(recipe.RecipeName))
+      console.log(response)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
 
   const classes = useStyles();
   const authApi = useContext(AuthApi)
 
 
-//   function handleOnChange(e){
-//     setValues( prevState => ({ ...prevState, ...{[e.target.name] : e.target.value}}))
-//  }
-
-
+  function handleOnChange(e){
+    getRecipe( prevState => ({ ...prevState, ...{[e.target.name] : e.target.value}}))
+ }
 
   const [submitted, setSubmitted] = useState(false)
   // const [valid, setValid]=useState(false)
 
 
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
-      // if(values.recipeName){
-      //   setValid(true)
-      // } 
-      // console.log(match.params.id)
+
       setSubmitted(true)
+      modifiedRecipe();
 
     }
 
-  //   const handleSignUp = async (e) =>{
-  //     e.preventDefault()
-  //     const res = await signup({username,password});
-  //     if (res.data.auth){
-  //       authApi.setAuth(true)
-  //     }
-  // }
   
   return (
     <Container component="main" maxWidth="xs">
@@ -111,7 +112,7 @@ export default function UpdateRecipe({match}) {
          Update Recipe
         </Typography>
         <form className={classes.form} noValidate>
-          {submitted ? <div className="success-message">Succesfully Created!</div> : null}
+          {submitted ? <div className="success-message">Succesfully Updated!</div> : null}
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -119,11 +120,11 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value='hello'
+                value={recipe.recipeName}
                 id="recipeName"
                 label="Recipe Name"
                 name="recipeName"
-                // onChange ={handleOnChange}
+                onChange ={handleOnChange}
               />
               {/* {submitted && values.recipeName==='' ? <span>Please enter Recipe Name</span> : null} */}
             </Grid>
@@ -132,26 +133,12 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value='hello'
+                value={recipe.img}
                 name="img"
                 label="img"
                 type="img"
                 id="img"
-                // onChange ={handleOnChange}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                type='hidden'
-                name="createdBy"
-                label="createdBy"
-                type="createdBy"
-                id="createdBy"
-                // onChange ={handleOnChange}
+                onChange ={handleOnChange}
               />
             </Grid>
 
@@ -160,11 +147,12 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
+                value={recipe.preTime}
                 name="preTime"
                 label="Preparation Time (Min)"
                 type="preTime"
                 id="preTime"
-                // onChange ={handleOnChange}
+                onChange ={handleOnChange}
               />
             </Grid>
 
@@ -173,11 +161,12 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
+                value={recipe.cookTime}
                 name="cookTime"
                 label="Cook Time (Min)"
                 type="cookTime"
                 id="cookTime"
-                // onChange ={handleOnChange}
+                onChange ={handleOnChange}
               />
             </Grid>
 
@@ -186,11 +175,12 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
+                value={recipe.ingredients}
                 name="ingredients"
                 label="Ingredients"
                 type="ingredients"
                 id="ingredients"
-                // onChange ={handleOnChange}
+                onChange ={handleOnChange}
               />
             </Grid>
 
@@ -199,11 +189,12 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
+                value={recipe.servings}
                 name="servings"
                 label="Number of Servings"
                 type="servings"
                 id="servings"
-                // onChange ={handleOnChange}
+                onChange ={handleOnChange}
               />
             </Grid>
 
@@ -212,11 +203,12 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
+                value={recipe.instruction}
                 name="instruction"
                 label="Instruction/Steps"
                 type="instruction"
                 id="instruction"
-                // onChange ={handleOnChange}
+                onChange ={handleOnChange}
               />
             </Grid>
             
@@ -241,6 +233,4 @@ export default function UpdateRecipe({match}) {
       </Box>
     </Container>
   );
-
-  return <>(UpdateRecipe()) </>
 }

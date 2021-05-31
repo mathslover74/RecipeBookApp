@@ -11,8 +11,8 @@ export default function Recipes({recipes}) {
       {recipes && recipes.map((recipe, index) => 
       <>
         <h2 key={`${index}_recipe`} > {recipe.recipeName}</h2>
-        <h3 key={`${index}_pretime`}>{recipe.preTime}</h3>
-        <Link key={`${index}_id`} to={`/recipe/update/${recipe._id}`}>{recipe.recipeName} </Link>
+        {/* <Link key={`${index}_id`} to={`/recipe/update/${recipe._id}`}>{recipe.recipeName} </Link> */}
+        <Link key={`${index}_id`} to={`/recipe/${recipe._id}`}>{recipe.recipeName} </Link>
       </>
       )}
     </div>

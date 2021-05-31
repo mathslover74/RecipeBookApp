@@ -32,8 +32,9 @@ function Routes(){
       {/* <RouteReg path='/recipe/update/:id' component={UpdateRecipe}/> */}
       <RouteProtected path='/dashboard' component={Dashboard}/>
       <RouteProtected path='/recipe/new' component={NewRecipe}/>
+      <RouteProtected path='/recipe/:id' component={UpdateRecipe}/>
       <RouteProtected path='/recipe/update' component={UpdateRecipe}/>
-      <RouteProtected path='/recipe/update/:id' component={UpdateRecipe}/>
+      {/* <RouteProtected path='/recipe/update/:id' component={UpdateRecipe}/> */}
         {/* <Recipe /> */}
       {/* <RouteProtected /> */}
     </Switch>
