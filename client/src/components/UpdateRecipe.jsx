@@ -6,6 +6,7 @@ import React, { useState, useContext, useEffect } from 'react';
 //   useParams
 // } from "react-router-dom";
 import { useParams } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -16,6 +17,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import AuthApi from '../utils/AuthAPI';
 const axios = require('axios');
+
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UpdateRecipe({match}) {
 
+  const history = useHistory();
 // const { id } = useParams();
 
 
@@ -60,6 +64,17 @@ export default function UpdateRecipe({match}) {
     })
     .catch(err => console.log(err))
   }
+
+  const deleteRecipe = async () => {
+    try{
+      await axios.delete(`/recipes/${match.params.id}`);
+      history.go(0)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+
 
   const modifiedRecipe = async () => {
     try {
@@ -97,11 +112,13 @@ export default function UpdateRecipe({match}) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
       setSubmitted(true)
       modifiedRecipe();
-
     }
+  
+  const handleDelete = (e) => {
+    
+  }
 
   
   return (
@@ -225,9 +242,22 @@ export default function UpdateRecipe({match}) {
           >
            Update Recipe
           </Button>
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            // onClick={handleSignUp}
+            onClick={() => deleteRecipe()}
+
+          >
+           Delete Recipe
+          </Button>
           <Grid container justify="flex-end">
           </Grid>
-        </form>
+        </form>        
       </div>
       <Box mt={5}>
       </Box>
