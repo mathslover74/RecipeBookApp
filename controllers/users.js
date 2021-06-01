@@ -2,9 +2,15 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/users");
 
+// router.get("/", (req, res) => {
+//   res.json({
+//     msg: "hello",
+//   });
+
+///find all users
 router.get("/", (req, res) => {
-  res.json({
-    msg: "hello",
+  User.find({}, (err, foundUsers) => {
+    res.json(foundUsers);
   });
 });
 
@@ -62,6 +68,18 @@ router.get("/signout", (req, res) => {
   req.session.destroy();
   res.json({
     auth: false,
+  });
+});
+
+///get user id
+router.get("/profile", async (req, res) => {
+  let userdata = req.session.user;
+  res.json(userdata);
+});
+
+router.get("/profile/:userid", (req, res) => {
+  User.findById(req.params.userid, (err, foundUser) => {
+    res.json(foundUser);
   });
 });
 

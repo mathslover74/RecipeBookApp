@@ -15,6 +15,8 @@ const path = require("path");
 
 //Controller
 const usersController = require("./controllers/users");
+const recipesController = require("./controllers/recipes");
+
 const bodyParser = require("body-parser");
 
 // Middleware
@@ -37,7 +39,7 @@ app.use(
 // Database
 mongoose.connect(
   mongoURI,
-  { useNewUrlParser: true, useUnifiedTopolog: true },
+  { useNewUrlParser: true, useUnifiedTopolog: true, useCreateIndex: true },
   () => {
     console.log("MongoDB connection establish,");
   }
@@ -49,5 +51,9 @@ db.on("disconnected", () => console.log("mongo disconnected"));
 
 //Routes
 app.use("/users", usersController);
+app.use("/recipes", recipesController);
+app.get("*", (req, res) => {
+  res.status(404).json("Sorry, Page not found!");
+});
 
 app.listen(PORT, () => console.log("server is running on port", PORT));

@@ -73,11 +73,7 @@ export default function SignIn() {
     console.log(res)
     if(res.data.auth){
       authApi.setAuth(true)
-    }
-
-    
-
-    
+    }  
   }
 
   return (

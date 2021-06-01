@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -51,12 +49,12 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-  const classes = useStyles();
   const authApi = useContext(AuthApi)
+  const classes = useStyles();
 
 
   const handleOnChange = (e) => {
-    if(e.target.username === ' username'){
+    if(e.target.name === 'username'){
       setUsername(e.target.value)
     }else {
       setPassword(e.target.value)
@@ -107,12 +105,7 @@ export default function SignUp() {
                 onChange ={handleOnChange}
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid>
+
           </Grid>
           <Button
             type="submit"
