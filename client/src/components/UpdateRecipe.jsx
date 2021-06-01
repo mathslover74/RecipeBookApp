@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import AuthApi from '../utils/AuthAPI';
+import TopNav from './TopNav'
 const axios = require('axios');
 
 
@@ -52,7 +53,7 @@ export default function UpdateRecipe({match}) {
   },[])
   
   const[recipe, getRecipe] = useState('');
-  console.log(match.params)
+  // console.log(match.params)
 
   const fetchOneRecipe = async () => {
     // console.log({id})
@@ -64,7 +65,7 @@ export default function UpdateRecipe({match}) {
     })
     .catch(err => console.log(err))
   }
-
+  
   const deleteRecipe = async () => {
     try{
       await axios.delete(`/recipes/${match.params.id}`);
@@ -73,9 +74,9 @@ export default function UpdateRecipe({match}) {
       console.log(err)
     }
   }
-
-
-
+  
+  
+  
   const modifiedRecipe = async () => {
     try {
       const response = await axios.put(`/recipes/${match.params.id}`, {
@@ -94,22 +95,22 @@ export default function UpdateRecipe({match}) {
       console.log(err)
     }
   }
-
-
+  
+  
   const classes = useStyles();
   const authApi = useContext(AuthApi)
-
-
+  
+  
   function handleOnChange(e){
     getRecipe( prevState => ({ ...prevState, ...{[e.target.name] : e.target.value}}))
- }
-
+  }
+  
   const [submitted, setSubmitted] = useState(false)
   // const [valid, setValid]=useState(false)
-
-
-
-
+  
+  
+  
+  
   const handleSubmit = (event) => {
     event.preventDefault();
       setSubmitted(true)
@@ -119,10 +120,12 @@ export default function UpdateRecipe({match}) {
   const handleDelete = (e) => {
     
   }
-
+  
   
   return (
-    <Container component="main" maxWidth="xs">
+      <div>
+        <TopNav/>
+        <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
@@ -158,7 +161,7 @@ export default function UpdateRecipe({match}) {
                 onChange ={handleOnChange}
               />
             </Grid>
-
+  
             <Grid item xs={6}>
               <TextField
                 variant="outlined"
@@ -172,7 +175,7 @@ export default function UpdateRecipe({match}) {
                 onChange ={handleOnChange}
               />
             </Grid>
-
+  
             <Grid item xs={6}>
               <TextField
                 variant="outlined"
@@ -186,7 +189,7 @@ export default function UpdateRecipe({match}) {
                 onChange ={handleOnChange}
               />
             </Grid>
-
+  
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -200,7 +203,7 @@ export default function UpdateRecipe({match}) {
                 onChange ={handleOnChange}
               />
             </Grid>
-
+  
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -214,7 +217,7 @@ export default function UpdateRecipe({match}) {
                 onChange ={handleOnChange}
               />
             </Grid>
-
+  
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -238,11 +241,11 @@ export default function UpdateRecipe({match}) {
             className={classes.submit}
             // onClick={handleSignUp}
             onClick={handleSubmit}
-
+  
           >
            Update Recipe
           </Button>
-
+  
           <Button
             type="submit"
             fullWidth
@@ -251,7 +254,7 @@ export default function UpdateRecipe({match}) {
             className={classes.submit}
             // onClick={handleSignUp}
             onClick={() => deleteRecipe()}
-
+  
           >
            Delete Recipe
           </Button>
@@ -262,5 +265,7 @@ export default function UpdateRecipe({match}) {
       <Box mt={5}>
       </Box>
     </Container>
+      </div>
+    
   );
 }

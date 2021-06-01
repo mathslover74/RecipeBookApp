@@ -53,6 +53,7 @@ router.post("/signup", (req, res) => {
 
 router.get("/hassign", (req, res) => {
   if (req.session.user) {
+    console.log(req.session.user);
     return res.json({
       auth: true,
       message: "your are sign in",

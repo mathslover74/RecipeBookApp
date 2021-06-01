@@ -12,12 +12,12 @@ const signup = async (user) => {
 };
 
 const hasSignned = async () => {
-  const result = await axios.get("users/hassign");
+  const result = await axios.get("/users/hassign");
   return result;
 };
 
 const signout = async () => {
-  const result = await axios.get("users/signout");
+  const result = await axios.get("/users/signout");
   return result;
 };
 

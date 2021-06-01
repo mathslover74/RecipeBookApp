@@ -34,7 +34,6 @@ function Dashboard() {
 
   return(
     <div>
-      <TopNav />
       <div className= 'topNav'>
         <h1>Dashboard</h1>
         <button onClick={handleLogout}>Logout</button>

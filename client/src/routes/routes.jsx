@@ -28,12 +28,16 @@ function Routes(){
         <Recipe />
       </Route> */}
       <RouteReg path='/signin' component={() => withLayout(SignIn)}/>
-      <RouteReg path='/signup' component={SignUp}/>
+      <RouteReg path='/signup' component={() => withLayout(SignUp)}/>
       {/* <RouteReg path='/recipe/update' component={UpdateRecipe}/> */}
       {/* <RouteReg path='/recipe/update/:id' component={UpdateRecipe}/> */}
-      <RouteProtected path='/dashboard' component={Dashboard}/>
-      <RouteProtected path='/recipe/new' component={NewRecipe}/>
-      <RouteProtected path='/recipe/:id' component={UpdateRecipe}/>
+
+      <RouteProtected exact path='/dashboard' component={() => withLayout(Dashboard)}/>
+      <RouteProtected exact path='/recipe/new' component={() => withLayout(NewRecipe)}/>
+      {/* <RouteProtected path='/recipe/:id' component={() => withLayout(UpdateRecipe)}/> */}
+      {/* <RouteProtected path='/dashboard' component={Dashboard}/> */}
+      {/* <RouteProtected path='/recipe/new' component={NewRecipe}/> */}
+      <RouteProtected exact path='/recipe/:id' component={UpdateRecipe}/>
       {/* <RouteProtected exact path='/recipe/update' component={UpdateRecipe}/> */}
       {/* <RouteProtected path='/recipe/update/:id' component={UpdateRecipe}/> */}
         {/* <Recipe /> */}
