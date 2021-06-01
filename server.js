@@ -52,5 +52,8 @@ db.on("disconnected", () => console.log("mongo disconnected"));
 //Routes
 app.use("/users", usersController);
 app.use("/recipes", recipesController);
+app.get("*", (req, res) => {
+  res.status(404).json("Sorry, Page not found!");
+});
 
 app.listen(PORT, () => console.log("server is running on port", PORT));

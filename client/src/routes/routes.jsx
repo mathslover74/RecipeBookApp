@@ -23,6 +23,7 @@ import TopNav from '../components/TopNav'
 function Routes(){
   return(
     <Switch>
+      {/* <Redirect to='/signin'/> */}
       {/* <Route path='/recipe/update/:id' component={About}>
         <Recipe />
       </Route> */}
@@ -33,7 +34,7 @@ function Routes(){
       <RouteProtected path='/dashboard' component={Dashboard}/>
       <RouteProtected path='/recipe/new' component={NewRecipe}/>
       <RouteProtected path='/recipe/:id' component={UpdateRecipe}/>
-      <RouteProtected path='/recipe/update' component={UpdateRecipe}/>
+      {/* <RouteProtected exact path='/recipe/update' component={UpdateRecipe}/> */}
       {/* <RouteProtected path='/recipe/update/:id' component={UpdateRecipe}/> */}
         {/* <Recipe /> */}
       {/* <RouteProtected /> */}
@@ -58,6 +59,7 @@ const RouteReg =({component: Component, ...rest}) => {
       {...rest} 
       render = {props => 
         !authApi.auth ? <Component {...props}/> : <Redirect to='/dashboard'/>
+        // !authApi.auth ? <Redirect to='/signin'/> : <Redirect to='/dashboard'/>
       } 
     />
   );
