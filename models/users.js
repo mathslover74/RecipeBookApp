@@ -5,26 +5,26 @@ const userSchema = new mongoose.Schema({
   username: { type: String },
   password: { type: String },
   superUser: { type: Boolean },
-  fullName: {},
-  userRecipes: [
-    {
-      recipeName: String,
-      img: String,
-      preTime: Number,
-      cookTime: Number,
-      ingredients: [String], ///with check box for future
-      servings: Number,
-      instruction: String,
+  // fullName: {},
+  // userRecipes: [
+  //   {
+  //     recipeName: String,
+  //     img: String,
+  //     preTime: Number,
+  //     cookTime: Number,
+  //     ingredients: [String], ///with check box for future
+  //     servings: Number,
+  //     instruction: String,
 
-      ////for future improvement
-      // instructions: [
-      //   {
-      //     stepsNo: Number,
-      //     steps: String,
-      //   },
-      // ],
-    },
-  ],
+  //     ////for future improvement
+  //     // instructions: [
+  //     //   {
+  //     //     stepsNo: Number,
+  //     //     steps: String,
+  //     //   },
+  //     // ],
+  //   },
+  // ],
   // fullName: {type:String},
   // email: {type:String},
   // userRecipe: [

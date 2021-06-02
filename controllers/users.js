@@ -14,6 +14,25 @@ router.get("/", (req, res) => {
   });
 });
 
+// ///find user
+// router.get("/:id", (req, res) => {
+//   User.findById(req.params.id, (err, foundUser) => {
+//     res.json(foundUser);
+//   });
+// });
+
+// ///edit super user
+// router.put("/:id", (req, res) => {
+//   User.findByIdAndUpdate(
+//     req.params.id,
+//     req.body,
+//     { new: true },
+//     (err, updateUser) => {
+//       res.json(updateUser);
+//     }
+//   );
+// });
+
 router.post("/signin", async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findUser(username, password);

@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [superUser, setSuperUser] = useState('false');
   const authApi = useContext(AuthApi)
   const classes = useStyles();
 
@@ -62,7 +63,7 @@ export default function SignUp() {
   }
     const handleSignUp = async (e) =>{
       e.preventDefault()
-      const res = await signup({username,password});
+      const res = await signup({username,password,superUser});
       if (res.data.auth){
         authApi.setAuth(true)
       }
