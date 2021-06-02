@@ -33,6 +33,25 @@ router.get("/", (req, res) => {
 //   );
 // });
 
+///get user id
+router.get("/profile", async (req, res) => {
+  let userdata = req.session.user;
+  res.json(userdata);
+});
+
+// router.get("/profile/:userid", (req, res) => {
+//   User.findById(req.params.userid, (err, foundUser) => {
+//     res.json(foundUser);
+//   });
+// });
+
+router.get("/profile/:userid", (req, res) => {
+  User.find({ _id: req.params.userid, superUser: true }, (err, foundUser) => {
+    // res.json(foundUser[0].username);
+    res.json(foundUser);
+  });
+});
+
 router.post("/signin", async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findUser(username, password);
@@ -88,18 +107,6 @@ router.get("/signout", (req, res) => {
   req.session.destroy();
   res.json({
     auth: false,
-  });
-});
-
-///get user id
-router.get("/profile", async (req, res) => {
-  let userdata = req.session.user;
-  res.json(userdata);
-});
-
-router.get("/profile/:userid", (req, res) => {
-  User.findById(req.params.userid, (err, foundUser) => {
-    res.json(foundUser);
   });
 });
 

@@ -24,7 +24,10 @@ export default function TopNav() {
 
 useEffect(()=>{
   checkSignIn()
-},[])
+  checkUserID()
+  checkSuperUser()
+})
+// },[])
 
   const authApi = React.useContext(AuthApi);
   const classes = useStyles();
@@ -40,18 +43,47 @@ useEffect(()=>{
   }
 
   const [SignIn, setSignIn] = useState(false)
+  const [UserID, setUserID] = useState('')
+  const [SuperUser, setSuperUser] = useState('')
 
   const checkSignIn = async () => {
     const res = await axios.get('/users/hassign/')
-    console.log(res.data.auth)
+    console.log(res.data)
     setSignIn(res.data.auth)
+  }
+
+  const checkUserID = async () => {
+    const res = await axios.get('/users/profile/')
+    console.log(res.data)
+    setUserID(res.data)
+    console.log(UserID)
+    
+    // const superUser = await res.json();
+    // setSuperUser(superUser)
+    // console.log(superUser)
+  
+    // console.(superUser)
+  }
+
+  let id = `/users/profile/${UserID}/`
+  // console.log(typeof `${UserID}`)
+  console.log(id)
+
+
+  const checkSuperUser = async () => {
+    // const res = await axios.get(id)
+    // const res = await axios.get(`/users/profile/60b7910b2857d061a8ba8a8d/`)
+    const res = await axios.get(`/users/profile/${UserID}/`)
+    console.log(res)
   }
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Button href='/Dashboard' color="inherit">My Recipes</Button>
+          {SignIn ?
+          <Button href='/Dashboard' color="inherit">My Recipes</Button> : null
+          }
           <Button href='/Dashboard' color="inherit">Browse Recipes</Button>
           <Typography variant="h6" className={classes.title}>
             News
