@@ -45,9 +45,15 @@ router.get("/profile", async (req, res) => {
 //   });
 // });
 
-router.get("/profile/:userid", (req, res) => {
-  User.find({ _id: req.params.userid, superUser: true }, (err, foundUser) => {
-    // res.json(foundUser[0].username);
+// router.get("/profile/:userid", (req, res) => {
+//   User.find({ _id: req.params.userid, superUser: true }, (err, foundUser) => {
+//     // res.json(foundUser[0].username);
+//     res.json(foundUser);
+//   });
+// });
+
+router.get("/profile/:userid", async (req, res) => {
+  User.findOne({ _id: req.params.userid }, "superUser").then((foundUser) => {
     res.json(foundUser);
   });
 });

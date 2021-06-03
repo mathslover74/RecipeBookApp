@@ -41,7 +41,9 @@ function Dashboard() {
         <h1>Full List of Recipes</h1>
         {/* <button onClick={fetchRecipes}>Get Recipes</button> */}
         {/* {recipes && <Recipes recipes={recipes}/>} */}
+        
         <Recipes recipes={recipes} />
+        
       
 
       </div>

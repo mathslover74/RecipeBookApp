@@ -65,24 +65,28 @@ useEffect(()=>{
     // console.(superUser)
   }
 
-  let id = `/users/profile/${UserID}/`
+  // let id = `/users/profile/${UserID}/`
   // console.log(typeof `${UserID}`)
-  console.log(id)
+  // console.log(id)
 
 
   const checkSuperUser = async () => {
     // const res = await axios.get(id)
     // const res = await axios.get(`/users/profile/60b7910b2857d061a8ba8a8d/`)
     const res = await axios.get(`/users/profile/${UserID}/`)
-    console.log(res)
+    console.log(res.data.superUser)
+    setSuperUser(res.data.superUser)
   }
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          {SignIn ?
-          <Button href='/Dashboard' color="inherit">My Recipes</Button> : null
+          {SuperUser &&
+          <Button href='/Dashboard' color="inherit">Edit All Recipes</Button>
+          }
+          {SignIn &&
+          <Button href='/Dashboard' color="inherit">My Recipes</Button>
           }
           <Button href='/Dashboard' color="inherit">Browse Recipes</Button>
           <Typography variant="h6" className={classes.title}>
