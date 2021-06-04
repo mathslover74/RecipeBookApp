@@ -1,10 +1,11 @@
 import React from "react";
 import { Switch, Route, Redirect,useParams} from "react-router-dom";
 import SignIn from '.././components/SignIn'
-import Dashboard from "../components/Dashboard";
+import BrowseRecipe from "../components/BrowseRecipe";
 import SignUp from '../components/SignUp';
 import  NewRecipe from '../components/NewRecipe';
 import UpdateRecipe from '../components/UpdateRecipe'
+import MyRecipe from '../components/MyRecipe'
 // import About from '../components/'
 import AuthAPI from "../utils/AuthAPI";
 import TopNav from '../components/TopNav'
@@ -32,12 +33,13 @@ function Routes(){
       {/* <RouteReg path='/recipe/update' component={UpdateRecipe}/> */}
       {/* <RouteReg path='/recipe/update/:id' component={UpdateRecipe}/> */}
 
-      <RouteProtected exact path='/dashboard' component={() => withLayout(Dashboard)}/>
+      <RouteProtected exact path='/browseRecipe' component={() => withLayout(BrowseRecipe)}/>
+      <RouteProtected exact path='/recipe' component={() => withLayout(MyRecipe)}/>
+      <RouteProtected exact path='/recipe/:id' component={UpdateRecipe}/>
       <RouteProtected exact path='/recipe/new' component={() => withLayout(NewRecipe)}/>
       {/* <RouteProtected path='/recipe/:id' component={() => withLayout(UpdateRecipe)}/> */}
       {/* <RouteProtected path='/dashboard' component={Dashboard}/> */}
       {/* <RouteProtected path='/recipe/new' component={NewRecipe}/> */}
-      <RouteProtected exact path='/recipe/:id' component={UpdateRecipe}/>
       {/* <RouteProtected exact path='/recipe/update' component={UpdateRecipe}/> */}
       {/* <RouteProtected path='/recipe/update/:id' component={UpdateRecipe}/> */}
         {/* <Recipe /> */}
@@ -62,7 +64,7 @@ const RouteReg =({component: Component, ...rest}) => {
     <Route
       {...rest} 
       render = {props => 
-        !authApi.auth ? <Component {...props}/> : <Redirect to='/dashboard'/>
+        !authApi.auth ? <Component {...props}/> : <Redirect to='/browseRecipe'/>
         // !authApi.auth ? <Redirect to='/signin'/> : <Redirect to='/dashboard'/>
       } 
     />

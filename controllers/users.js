@@ -33,8 +33,11 @@ router.get("/", (req, res) => {
 //   );
 // });
 
-///get user id
+///get user id & name
 router.get("/profile", async (req, res) => {
+  // User.findOne({ _id: req.session.user }, "username").then((foundUser) => {
+  //   res.json(foundUser);
+  // });
   let userdata = req.session.user;
   res.json(userdata);
 });
@@ -52,10 +55,20 @@ router.get("/profile", async (req, res) => {
 //   });
 // });
 
+// router.get("/profile/:userid", async (req, res) => {
+//   User.findOne({ _id: req.params.userid }, "superUser").then(
+//     (foundUser) => {
+//       res.json(foundUser);
+//     }
+//   );
+// });
+
 router.get("/profile/:userid", async (req, res) => {
-  User.findOne({ _id: req.params.userid }, "superUser").then((foundUser) => {
-    res.json(foundUser);
-  });
+  User.findOne({ _id: req.params.userid }, { password: 0 }).then(
+    (foundUser) => {
+      res.json(foundUser);
+    }
+  );
 });
 
 router.post("/signin", async (req, res) => {

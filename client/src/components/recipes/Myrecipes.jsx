@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react';
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -20,6 +20,7 @@ import { flexbox } from '@material-ui/system';
 import Button from '@material-ui/core/Button';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Box from '@material-ui/core/Box';
+import axios from "axios"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,16 +48,48 @@ const useStyles = makeStyles((theme) => ({
 
 
 //default export
-export default function Recipes({recipes}) { 
+export default function MyRecipes({recipes}) { 
+
+  useEffect(()=>{
+    checkUserID()
+    checkUsername()
+  })
+  // },[])
+
+
   console.log('........')
   // console.log(recipes[0].recipeName)
 
   const classes = useStyles();
+  const [UserID, setUserID] = useState('')
+  const [Username, setUsername] = useState('')
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  
+  const checkUserID = async () => {
+    const res = await axios.get('/users/profile/')
+    console.log(res)
+    setUserID(res.data)
+    console.log(UserID)
+    
+    // const superUser = await res.json();
+    // setSuperUser(superUser)
+    // console.log(superUser)
+  
+    // console.(superUser)
+  }
+
+  const checkUsername = async () => {
+    // const res = await axios.get(id)
+    // const res = await axios.get(`/users/profile/60b7910b2857d061a8ba8a8d/`)
+    const res = await axios.get(`/users/profile/${UserID}/`)
+    console.log(res.data.username)
+    setUsername(res.data.username)
+    console.log(Username)
+  }
 
   return(
     

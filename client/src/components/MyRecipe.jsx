@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import AuthApi from '../utils/AuthAPI'
-import {signout} from '../components/auth-api'
+import {signout} from './auth-api'
 import { Link } from 'react-router-dom';
 import TopNav from './TopNav'
 import axios from 'axios';
-import Recipes from './recipes/recipes'
+import MyRecipes from './recipes/Myrecipes'
+import Button from '@material-ui/core/Button';
 
-function Dashboard() {
+function MyRecipe() {
 
   useEffect(()=> {
     fetchRecipes();
@@ -35,14 +36,16 @@ function Dashboard() {
   return(
     <div>
       <div className= 'topNav'>
-        <h1>Dashboard</h1>
-        <button onClick={handleLogout}>Logout</button>
-        <Link to={'/recipe/new'}>Create new recipe</Link>
-        <h1>Full List of Recipes</h1>
+        <br></br>
+        <Link to={'/recipe/new'} >
+        <Button variant='contained' color='primary'>Create New Recipe
+        </Button>
+        </Link>
+        <h1>My Recipes</h1>
         {/* <button onClick={fetchRecipes}>Get Recipes</button> */}
         {/* {recipes && <Recipes recipes={recipes}/>} */}
         
-        <Recipes recipes={recipes} />
+        <MyRecipes recipes={recipes} />
         
       
 
@@ -51,4 +54,4 @@ function Dashboard() {
   )
 }
 
-export default Dashboard;
+export default MyRecipe;

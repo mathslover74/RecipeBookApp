@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import {signout} from './auth-api'
 import AuthApi from '../utils/AuthAPI'
 import axios from "axios"
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,7 +55,7 @@ useEffect(()=>{
 
   const checkUserID = async () => {
     const res = await axios.get('/users/profile/')
-    console.log(res.data)
+    console.log(res)
     setUserID(res.data)
     console.log(UserID)
     
@@ -74,7 +75,7 @@ useEffect(()=>{
     // const res = await axios.get(id)
     // const res = await axios.get(`/users/profile/60b7910b2857d061a8ba8a8d/`)
     const res = await axios.get(`/users/profile/${UserID}/`)
-    console.log(res.data.superUser)
+    console.log(res.data)
     setSuperUser(res.data.superUser)
   }
 
@@ -82,13 +83,23 @@ useEffect(()=>{
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          {SuperUser &&
-          <Button href='/Dashboard' color="inherit">Edit All Recipes</Button>
-          }
           {SignIn &&
-          <Button href='/Dashboard' color="inherit">My Recipes</Button>
+          // <Button href='/recipe' color="inherit">My Recipes</Button>
+            <Link to={`/recipe`} style={{textDecoration: 'none'}, {color: 'rgba(255,255,255)'}}>
+              <Button href='/recipe' color="inherit">
+              My Recipes
+              </Button>
+              </Link>
           }
-          <Button href='/Dashboard' color="inherit">Browse Recipes</Button>
+          {SuperUser ? 
+          // <Button href='/browseRecipe' color="inherit">Browse & Edit All Recipes</Button> 
+          <Link to={`/browseRecipe`} style={{textDecoration: 'none'},{color: 'rgba(255,255,255)'}}>
+            <Button color="inherit">Browse & Edit All Recipes</Button> 
+          </Link> :
+          <Link to={`/browseRecipe`} style={{textDecoration: 'none'},{color: 'rgba(255,255,255)'}}>
+          <Button color="inherit">Browse Recipes</Button>
+          </Link>
+        }
           <Typography variant="h6" className={classes.title}>
             News
           </Typography>
