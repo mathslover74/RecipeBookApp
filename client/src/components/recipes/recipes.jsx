@@ -55,8 +55,8 @@ export default function Recipes({recipes}) {
     checkUserID()
     checkSuperUser()
     console.log('Recipe use effect')
-  },[])
-  // })
+  // },[])
+  })
 
   console.log('........')
 
