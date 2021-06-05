@@ -70,6 +70,7 @@ export default function SignIn() {
 
     // authApi.setAuth(true)
     const res = await signin({ username, password });
+    console.log(res.data.auth)
     console.log(res)
     if(res.data.auth){
       authApi.setAuth(true)

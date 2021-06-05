@@ -56,6 +56,12 @@ router.delete("/:id", (req, res) => {
   });
 });
 
+router.get("/userRecipe/:username", (req, res) => {
+  Recipes.find({ createdBy: req.params.username }, (err, user) => {
+    res.json(user);
+  });
+});
+
 module.exports = router;
 
 // console.log(products);

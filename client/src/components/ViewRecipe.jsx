@@ -5,8 +5,8 @@ import React, { useState, useContext, useEffect } from 'react';
 //   Route,
 //   useParams
 // } from "react-router-dom";
-import { useParams } from 'react-router-dom';
-import { useHistory } from 'react-router';
+import { useParams , use} from 'react-router-dom';
+import { useHistory , Link} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UpdateRecipe({match}) {
+export default function ViewRecipe({match}) {
 
   const history = useHistory();
 // const { id } = useParams();
@@ -66,36 +66,6 @@ export default function UpdateRecipe({match}) {
     .catch(err => console.log(err))
   }
   
-  const deleteRecipe = async () => {
-    try{
-      await axios.delete(`/recipes/${match.params.id}`);
-      history.go(0)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-  
-  
-  
-  const modifiedRecipe = async () => {
-    try {
-      const response = await axios.put(`/recipes/${match.params.id}`, {
-        recipeName: recipe.recipeName,
-        img: recipe.img,
-        createdBy: recipe.createdBy,
-        preTime: recipe.preTime,
-        cookTime: recipe.cookTime,
-        ingredients: recipe.ingredients,
-        serving: recipe.serving,
-        instruction: recipe.instruction
-      });
-      console.log(JSON.stringify(recipe.RecipeName))
-      console.log(response)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-  
   
   const classes = useStyles();
   const authApi = useContext(AuthApi)
@@ -104,8 +74,7 @@ export default function UpdateRecipe({match}) {
   function handleOnChange(e){
     getRecipe( prevState => ({ ...prevState, ...{[e.target.name] : e.target.value}}))
   }
-  
-  const [submitted, setSubmitted] = useState(false)
+
   // const [valid, setValid]=useState(false)
   
   
@@ -113,26 +82,25 @@ export default function UpdateRecipe({match}) {
   
   const handleSubmit = (event) => {
     event.preventDefault();
-      setSubmitted(true)
-      modifiedRecipe();
     }
-  
-  const handleDelete = (e) => {
-    
-  }
-  
+
   
   return (
       <div>
         <TopNav/>
+
         <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
+        <Link to={'/browseRecipe'} >
+        <Button variant='contained' color='primary'>Return to Browse Recipe
+        </Button>
+        </Link>
+        <br />
         <Typography component="h1" variant="h5">
-         Update Recipe
+         {recipe.recipeName}
         </Typography>
         <form className={classes.form} noValidate>
-          {submitted ? <div className="success-message">Succesfully Updated!</div> : null}
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -142,7 +110,7 @@ export default function UpdateRecipe({match}) {
                 fullWidth
                 value={recipe.recipeName}
                 id="recipeName"
-                label="Recipe Name"
+                // label="Recipe Name"
                 name="recipeName"
                 onChange ={handleOnChange}
               />
@@ -155,7 +123,7 @@ export default function UpdateRecipe({match}) {
                 fullWidth
                 value={recipe.img}
                 name="img"
-                label="img"
+                // label="img"
                 type="img"
                 id="img"
                 onChange ={handleOnChange}
@@ -169,7 +137,7 @@ export default function UpdateRecipe({match}) {
                 fullWidth
                 value={recipe.preTime}
                 name="preTime"
-                label="Preparation Time (Min)"
+                // label="Preparation Time (Min)"
                 type="preTime"
                 id="preTime"
                 onChange ={handleOnChange}
@@ -183,7 +151,7 @@ export default function UpdateRecipe({match}) {
                 fullWidth
                 value={recipe.cookTime}
                 name="cookTime"
-                label="Cook Time (Min)"
+                // label="Cook Time (Min)"
                 type="cookTime"
                 id="cookTime"
                 onChange ={handleOnChange}
@@ -197,7 +165,7 @@ export default function UpdateRecipe({match}) {
                 fullWidth
                 value={recipe.ingredients}
                 name="ingredients"
-                label="Ingredients"
+                // label="Ingredients"
                 type="ingredients"
                 id="ingredients"
                 onChange ={handleOnChange}
@@ -211,7 +179,7 @@ export default function UpdateRecipe({match}) {
                 fullWidth
                 value={recipe.servings}
                 name="servings"
-                label="Number of Servings"
+                // label="Number of Servings"
                 type="servings"
                 id="servings"
                 onChange ={handleOnChange}
@@ -225,39 +193,15 @@ export default function UpdateRecipe({match}) {
                 fullWidth
                 value={recipe.instruction}
                 name="instruction"
-                label="Instruction/Steps"
+                // label="Instruction/Steps"
                 type="instruction"
                 id="instruction"
                 onChange ={handleOnChange}
               />
             </Grid>
             
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            // onClick={handleSignUp}
-            onClick={handleSubmit}
+          </Grid> 
   
-          >
-           Update Recipe
-          </Button>
-  
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            // onClick={handleSignUp}
-            onClick={() => deleteRecipe()}
-  
-          >
-           Delete Recipe
-          </Button>
           <Grid container justify="flex-end">
           </Grid>
         </form>        
