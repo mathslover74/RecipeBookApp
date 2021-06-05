@@ -49,47 +49,56 @@ const useStyles = makeStyles((theme) => ({
 
 //default export
 export default function MyRecipes({recipes}) { 
+// export default function MyRecipes() { 
 
   useEffect(()=>{
-    checkUserID()
-    checkUsername()
-  })
-  // },[])
+    // checkUserID()
+    // checkUsername()
+    // getUserRecipe()
+  // })
+  },[])
 
 
   console.log('........')
   // console.log(recipes[0].recipeName)
 
   const classes = useStyles();
-  const [UserID, setUserID] = useState('')
-  const [Username, setUsername] = useState('')
+  // const [UserID, setUserID] = useState('')
+  // const [Username, setUsername] = useState('')
+  // const [recipes, setRecipes] = useState('')
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
   
-  const checkUserID = async () => {
-    const res = await axios.get('/users/profile/')
-    console.log(res)
-    setUserID(res.data)
-    console.log(UserID)
+  // const checkUserID = async () => {
+  //   const res = await axios.get('/users/profile/')
+  //   console.log(res)
+  //   setUserID(res.data)
+  //   console.log(UserID)
     
-    // const superUser = await res.json();
-    // setSuperUser(superUser)
-    // console.log(superUser)
+  //   // const superUser = await res.json();
+  //   // setSuperUser(superUser)
+  //   // console.log(superUser)
   
-    // console.(superUser)
-  }
+  //   // console.(superUser)
+  // }
 
-  const checkUsername = async () => {
-    // const res = await axios.get(id)
-    // const res = await axios.get(`/users/profile/60b7910b2857d061a8ba8a8d/`)
-    const res = await axios.get(`/users/profile/${UserID}/`)
-    console.log(res.data.username)
-    setUsername(res.data.username)
-    console.log(Username)
-  }
+  // const checkUsername = async () => {
+  //   // const res = await axios.get(id)
+  //   // const res = await axios.get(`/users/profile/60b7910b2857d061a8ba8a8d/`)
+  //   const res = await axios.get(`/users/profile/${UserID}/`)
+  //   console.log(res.data.username)
+  //   setUsername(res.data.username)
+  //   console.log(Username)
+  // }
+
+  // const getUserRecipe = async () => {
+  //   const res =await axios.get(`/recipes/userRecipe/${Username}/`)
+  //   console.log(res)
+  //   setRecipes(res.data)
+  // }
 
   return(
     

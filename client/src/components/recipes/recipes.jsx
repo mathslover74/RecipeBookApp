@@ -69,11 +69,11 @@ export default function Recipes({recipes}) {
           {/* <CardActionArea href={`/recipe/60b4ee39107017402d582fa2`} > */}
           {/* <CardActionArea href=`/recipe/${recipe._id}` > */}
           <CardActionArea href={`/recipe/${recipe._id}/`}>
-          <Link key={`${index}_id`} to={`/recipe/${recipe._id}`}>{recipe.recipeName} </Link>
+          <Link key={`${index}_id`} to={`/viewrecipe/${recipe._id}`}>{recipe.recipeName} </Link>
           <CardHeader
             // title = {recipe.recipeName}
-            subheader = {recipe._id}
-            // subheader = "by" {recipe.createBy}
+            // subheader = {recipe._id}
+            subheader = {recipe.createdBy}
           />
           <CardMedia
             className={classes.media}
@@ -140,7 +140,7 @@ export default function Recipes({recipes}) {
       )}
       </Box>
 
-      <div>
+      {/* <div>
       {recipes && recipes.map((recipe, index) => 
       <>
         <h2 key={`${index}_recipe`} > {recipe.recipeName}</h2>
@@ -148,7 +148,7 @@ export default function Recipes({recipes}) {
       </>
       )}
 
-      </div>
+      </div> */}
     
     </>
   )

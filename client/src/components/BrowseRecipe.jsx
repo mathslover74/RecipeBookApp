@@ -26,6 +26,7 @@ function BrowseRecipe() {
     .then((res)=> {
       // debugger
       setRecipes(res.data)
+      console.log(recipes)
 
       // console.log(res.data)
     })
