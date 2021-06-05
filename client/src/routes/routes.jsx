@@ -36,8 +36,8 @@ function Routes(){
 
       <RouteProtected exact path='/browseRecipe' component={() => withLayout(BrowseRecipe)}/>
       <RouteProtected exact path='/viewrecipe/:id' component={ViewRecipe}/>
-      <RouteProtected exact path='/recipe' component={() => withLayout(MyRecipe)}/>
-      <RouteProtected exact path='/recipe/new' component={() => withLayout(NewRecipe)}/>
+      <RouteProtected path='/recipe' component={() => withLayout(MyRecipe)}/>
+      <RouteProtected path='/recipe/new' component={() => withLayout(NewRecipe)}/>
       <RouteProtected exact path='/recipe/:id' component={UpdateRecipe}/>
 
       {/* <RouteProtected path='/recipe/:id' component={() => withLayout(UpdateRecipe)}/> */}

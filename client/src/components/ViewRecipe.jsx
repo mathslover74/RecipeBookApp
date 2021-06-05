@@ -5,8 +5,8 @@ import React, { useState, useContext, useEffect } from 'react';
 //   Route,
 //   useParams
 // } from "react-router-dom";
-import { useParams } from 'react-router-dom';
-import { useHistory } from 'react-router';
+import { useParams , use} from 'react-router-dom';
+import { useHistory , Link} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -83,18 +83,20 @@ export default function ViewRecipe({match}) {
   const handleSubmit = (event) => {
     event.preventDefault();
     }
-  
-  const handleDelete = (e) => {
-    
-  }
-  
+
   
   return (
       <div>
         <TopNav/>
+
         <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
+        <Link to={'/browseRecipe'} >
+        <Button variant='contained' color='primary'>Return to Browse Recipe
+        </Button>
+        </Link>
+        <br />
         <Typography component="h1" variant="h5">
          {recipe.recipeName}
         </Typography>
@@ -198,21 +200,8 @@ export default function ViewRecipe({match}) {
               />
             </Grid>
             
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            // onClick={handleSignUp}
-            // onClick={handleSubmit}
+          </Grid> 
   
-          >
-           Return
-          </Button>
-  
-        
           <Grid container justify="flex-end">
           </Grid>
         </form>        

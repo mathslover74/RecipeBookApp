@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -20,6 +20,7 @@ import { flexbox } from '@material-ui/system';
 import Button from '@material-ui/core/Button';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Box from '@material-ui/core/Box';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,7 +49,20 @@ const useStyles = makeStyles((theme) => ({
 
 //default export
 export default function Recipes({recipes}) { 
+
+  useEffect(()=> {
+    // checkSignIn()
+    checkUserID()
+    checkSuperUser()
+    console.log('Recipe use effect')
+  },[])
+  // })
+
   console.log('........')
+
+  const [UserID, setUserID] = useState('')
+  const [SuperUser, setSuperUser] = useState('')
+  // console.log(superUser)
   // console.log(recipes[0].recipeName)
 
   const classes = useStyles();
@@ -57,6 +71,21 @@ export default function Recipes({recipes}) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const checkUserID = async () => {
+    const res = await axios.get('/users/profile/')
+    console.log(res)
+    setUserID(res.data)
+    console.log(UserID)
+  }
+
+  const checkSuperUser = async () => {
+    // const res = await axios.get(id)
+    // const res = await axios.get(`/users/profile/60b7910b2857d061a8ba8a8d/`)
+    const res = await axios.get(`/users/profile/${UserID}/`)
+    console.log(res.data.superUser)
+    setSuperUser(res.data.superUser)
+  }
 
   return(
     
@@ -69,7 +98,11 @@ export default function Recipes({recipes}) {
           {/* <CardActionArea href={`/recipe/60b4ee39107017402d582fa2`} > */}
           {/* <CardActionArea href=`/recipe/${recipe._id}` > */}
           <CardActionArea href={`/recipe/${recipe._id}/`}>
+          {SuperUser ?
+          <Link key={`${index}_id`} to={`/recipe/${recipe._id}`}>{recipe.recipeName} </Link> 
+          :
           <Link key={`${index}_id`} to={`/viewrecipe/${recipe._id}`}>{recipe.recipeName} </Link>
+          }
           <CardHeader
             // title = {recipe.recipeName}
             // subheader = {recipe._id}

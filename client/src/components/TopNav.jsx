@@ -101,7 +101,7 @@ useEffect(()=>{
           </Link>
         }
           <Typography variant="h6" className={classes.title}>
-            News
+           Heading
           </Typography>
           {SignIn ? 
           <Button onClick={handleLogout} color="inherit">Logout</Button> :

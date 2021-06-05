@@ -114,7 +114,7 @@ export default function MyRecipes({recipes}) {
           <Link key={`${index}_id`} to={`/recipe/${recipe._id}`}>{recipe.recipeName} </Link>
           <CardHeader
             // title = {recipe.recipeName}
-            subheader = {recipe._id}
+            subheader = {recipe.createdBy}
             // subheader = "by" {recipe.createBy}
           />
           <CardMedia
@@ -181,7 +181,7 @@ export default function MyRecipes({recipes}) {
         </Box>
       )}
       </Box>
-
+{/* 
       <div>
       {recipes && recipes.map((recipe, index) => 
       <>
@@ -191,7 +191,7 @@ export default function MyRecipes({recipes}) {
       )}
 
       </div>
-    
+     */}
     </>
   )
 }
