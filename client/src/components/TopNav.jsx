@@ -79,11 +79,28 @@ useEffect(()=>{
     setSuperUser(res.data.superUser)
   }
 
+  const navigation = [{
+    display: SignIn,
+    path: '/recipe',
+    title: 'My Recipes',
+  }, {
+    display: SignIn,
+    path: '/browseRecipe',
+    title: SuperUser ? 'Browse & Edit All Recipes' : 'Browse Recipes',
+  }, {
+
+  } ]
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          {SignIn &&
+          {navigation.map((n, index) => (
+            n.display && <Link to={n.path}>
+              <Button>{n.title}</Button>
+            </Link>
+          ))}
+          {/* {SignIn &&
           // <Button href='/recipe' color="inherit">My Recipes</Button>
             <Link to={`/recipe`} style={{textDecoration: 'none'}, {color: 'rgba(255,255,255)'}}>
               <Button href='/recipe' color="inherit">
@@ -99,7 +116,7 @@ useEffect(()=>{
           <Link to={`/browseRecipe`} style={{textDecoration: 'none'},{color: 'rgba(255,255,255)'}}>
           <Button color="inherit">Browse Recipes</Button>
           </Link>
-        }
+        } */}
           <Typography variant="h6" className={classes.title}>
            Heading
           </Typography>

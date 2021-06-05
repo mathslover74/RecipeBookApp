@@ -10,6 +10,7 @@ import ViewRecipe from '../components/ViewRecipe'
 // import About from '../components/'
 import AuthAPI from "../utils/AuthAPI";
 import TopNav from '../components/TopNav'
+import Firebase from '../components/firebase/FirebaseImg'
 
 // function recipeID() {
 //   let { recipeID } = useParams();
@@ -29,6 +30,7 @@ function Routes(){
       {/* <Route path='/recipe/update/:id' component={About}>
         <Recipe />
       </Route> */}
+      <RouteReg path='/firebase' component={() => withLayout(Firebase)}/>
       <RouteReg path='/signin' component={() => withLayout(SignIn)}/>
       <RouteReg path='/signup' component={() => withLayout(SignUp)}/>
       {/* <RouteReg path='/recipe/update' component={UpdateRecipe}/> */}

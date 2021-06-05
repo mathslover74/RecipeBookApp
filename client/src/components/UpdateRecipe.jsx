@@ -140,7 +140,7 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.recipeName}
+                value={String(recipe.recipeName)}
                 id="recipeName"
                 label="Recipe Name"
                 name="recipeName"
@@ -153,7 +153,7 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.img}
+                value={String(recipe.img)}
                 name="img"
                 label="img"
                 type="img"
@@ -167,7 +167,7 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.preTime}
+                value={String(recipe.preTime)}
                 name="preTime"
                 label="Preparation Time (Min)"
                 type="preTime"
@@ -181,7 +181,7 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.cookTime}
+                value={String(recipe.cookTime)}
                 name="cookTime"
                 label="Cook Time (Min)"
                 type="cookTime"
@@ -195,7 +195,7 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.ingredients}
+                value={String(recipe.ingredients)}
                 name="ingredients"
                 label="Ingredients"
                 type="ingredients"
@@ -209,12 +209,12 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.servings}
+                value={String(recipe.servings)}
                 name="servings"
                 label="Number of Servings"
                 type="servings"
                 id="servings"
-                onChange ={handleOnChange}
+                onChange ={handleOnChange}ß
               />
             </Grid>
   
@@ -223,7 +223,7 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.instruction}
+                value={String(recipe.instruction)}
                 name="instruction"
                 label="Instruction/Steps"
                 type="instruction"

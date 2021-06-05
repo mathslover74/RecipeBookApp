@@ -92,10 +92,10 @@ export default function ViewRecipe({match}) {
         <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Link to={'/browseRecipe'} >
-        <Button variant='contained' color='primary'>Return to Browse Recipe
+        <Button variant='contained' color='primary' onClick={() => {
+          history.push('/browseRecipe')
+        }}>Return to Browse Recipe
         </Button>
-        </Link>
         <br />
         <Typography component="h1" variant="h5">
          {recipe.recipeName}
