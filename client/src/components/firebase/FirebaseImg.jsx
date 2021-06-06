@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import {storage} from "../firebase/index"
 
 
@@ -6,8 +6,24 @@ import {storage} from "../firebase/index"
 export default function ReactFireBaseImg() { 
 
   const [img, setImg] = useState(null)
-  const [url, setUrl] = useState('')
+  const [url, setUrl] = useState()
+  const [previewImg, setPreviewImg] = useState('');
   const [progress, setProgress] = useState(0)
+
+  const fileInputRef = useRef();
+
+  useEffect(() => {
+    if (img) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImg(reader.result)
+        
+      }
+      reader.readAsDataURL(img);
+    }else {
+      setPreviewImg(null)
+    }
+  },[img])
 
   const handleChange = e  => {
     if (e.target.files[0]){
@@ -40,7 +56,6 @@ export default function ReactFireBaseImg() {
       }
     )
   };
-
   console.log("img: ", img)
 
   
@@ -50,6 +65,42 @@ export default function ReactFireBaseImg() {
     <progress value={progress} max='100' />
     <br/>
 
+<form>
+  <p>
+   Hello
+  </p>
+  { previewImg ? (
+    <img src={previewImg} style = {{width:'200px'}, {height:'200px'}} />
+  ): (
+    <button style = {
+      {width: '200px'},
+      {height: '200px'}
+    }
+     onClick={(event) => {
+      event.preventDefault();
+      fileInputRef.current.click()
+    }}>Add Image</button>
+  )}
+
+    <input 
+    type='file' 
+    style={{display: 'none'}} 
+    ref={fileInputRef} 
+    accept='image/*'
+    onChange={(event) => {
+      const file = event.target.files[0]
+      if (file && file.type.substr(0,5) === 'imgage') {
+        setImg(file);
+      }else {
+        setImg(null)
+      }
+    }}
+    />
+</form>
+
+
+
+    <br/>
     <input type='file' onChange={handleChange} />
     <button onClick={handleUpload}Upload>Upload</button>
     <br/>
