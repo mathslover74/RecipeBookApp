@@ -5,6 +5,7 @@ import React, { useState, useContext, useEffect } from 'react';
 //   Route,
 //   useParams
 // } from "react-router-dom";
+import {storage} from "./firebase/index";
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import Button from '@material-ui/core/Button';
@@ -44,15 +45,37 @@ const useStyles = makeStyles((theme) => ({
 export default function UpdateRecipe({match}) {
 
   const history = useHistory();
+  const [img, setImg] = useState(null)
+  const [url, setUrl] = useState()
+  const [imgName, setImgName] = useState()
+  const [previewImg, setPreviewImg] = useState('');
+  const[recipe, getRecipe] = useState('');
 // const { id } = useParams();
-
 
   useEffect(()=>{
     // console.log(JSON.stringify({id}))
     fetchOneRecipe();
-  },[])
+    if (img) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImg(reader.result)
+        
+      }
+      reader.readAsDataURL(img);
+    }else {
+      setPreviewImg(null)
+    }
+  },[img])
+
+  const handleChangeImg = e  => {
+    if (e.target.files[0]){
+      setImg(e.target.files[0])
+      console.log(e.target.files[0])
+      // setValues()
+    }
+  }
   
-  const[recipe, getRecipe] = useState('');
+  
   // console.log(match.params)
 
   const fetchOneRecipe = async () => {
@@ -62,6 +85,9 @@ export default function UpdateRecipe({match}) {
     .then((res)=>{
       // console.log(res.data)
       getRecipe(res.data)
+      console.log(res.data.imgUrl)
+      // setImg(res.data.imgUrl)
+
     })
     .catch(err => console.log(err))
   }
@@ -74,6 +100,41 @@ export default function UpdateRecipe({match}) {
       console.log(err)
     }
   }
+
+    const handleUpload = () => {
+    const time = new Date().getTime()
+   
+    // const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+    const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+    uploadTask.on(
+      "state_changed",
+      snapshot => {
+        const name = `${time}${img.name}`
+        setImgName(name)
+        // setValues.imgName(name)
+        // setValues(prevState => ({...prevState, imgName : name}))
+        // setValues.imgName(name)
+        console.log(name) 
+      },
+      error => {
+        console.log(error)
+      },
+      () => {
+        
+        storage
+        .ref("images")
+        .child(`${time}${img.name}`)
+        .getDownloadURL()
+        .then(url => {
+          console.log(url)
+          setUrl(url)
+          // setValues.imgUrl(url)
+          // setValues(prevState => ({...prevState, imgUrl : url}))
+          // setValues.imgUrl(url)
+        })
+      }
+    )
+  };
   
   
   
@@ -81,7 +142,8 @@ export default function UpdateRecipe({match}) {
     try {
       const response = await axios.put(`/recipes/${match.params.id}`, {
         recipeName: recipe.recipeName,
-        img: recipe.img,
+        imgUrl: url,
+        imgName: imgName,
         createdBy: recipe.createdBy,
         preTime: recipe.preTime,
         cookTime: recipe.cookTime,
@@ -95,6 +157,22 @@ export default function UpdateRecipe({match}) {
       console.log(err)
     }
   }
+
+  const deleteImg = () => {
+    const storageRef = storage.ref() 
+    console.log(recipe.imgName)
+    const imgRef = storageRef.child(`images/${recipe.imgName}`);
+    
+    // gs://recipeapp-react.appspot.com/images/
+
+    imgRef.delete().then(()=>{
+      console.log(' img file deleted')
+    }).catch((err) => {
+      console.log(err)
+    })
+
+  }
+  
   
   
   const classes = useStyles();
@@ -113,14 +191,10 @@ export default function UpdateRecipe({match}) {
   
   const handleSubmit = (event) => {
     event.preventDefault();
+      deleteImg()
       setSubmitted(true)
       modifiedRecipe();
     }
-  
-  const handleDelete = (e) => {
-    
-  }
-  
   
   return (
       <div>
@@ -149,7 +223,24 @@ export default function UpdateRecipe({match}) {
               {/* {submitted && values.recipeName==='' ? <span>Please enter Recipe Name</span> : null} */}
             </Grid>
             <Grid item xs={12}>
-              <TextField
+
+            {/* <img src='http://via.placeholder.com/200x200'/> */}
+            {!img ? 
+            (<img src={recipe.imgUrl} style = {{width:'200px'}, {height:'200px'}}/>)
+            : 
+            (<img src={previewImg} style = {{width:'200px'}, {height:'200px'}} />)
+            }
+
+
+            {/* { previewImg ? (
+              <img src={previewImg} style = {{width:'200px'}, {height:'200px'}} />
+            ): (
+              <img src='http://via.placeholder.com/200x200'/>
+            )} */}
+            
+            <input type='file' accept='image/*' onChange={handleChangeImg} />
+
+              {/* <TextField
                 variant="outlined"
                 required
                 fullWidth
@@ -159,7 +250,7 @@ export default function UpdateRecipe({match}) {
                 type="img"
                 id="img"
                 onChange ={handleOnChange}
-              />
+              /> */}
             </Grid>
   
             <Grid item xs={6}>

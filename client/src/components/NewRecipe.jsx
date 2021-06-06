@@ -17,7 +17,7 @@ const fetchUserID = async() => {
   try{
     const fetchUserID = await fetch ('/users/profile');
     const userID = await fetchUserID.json();
-    console.log(userID)
+    // console.log(userID)
     return userID
   } catch (err) {
     console.log(err)
@@ -54,7 +54,6 @@ export default function NewRecipe({match}) {
   const [url, setUrl] = useState()
   const [imgName, setImgName] = useState()
   const [previewImg, setPreviewImg] = useState('');
-  const [progress, setProgress] = useState(0)
   const [values, setValues] = useState( {
     recipeName:'',
     imgUrl:'',
@@ -87,8 +86,13 @@ export default function NewRecipe({match}) {
     }
   },[img])
 
-
-
+  const handleChangeImg = e  => {
+    if (e.target.files[0]){
+      setImg(e.target.files[0])
+      console.log(e.target.files[0])
+      // setValues()
+    }
+  }
 
   // const [recipeName, setRecipeName] = useState();
   // const [img, setImg] = useState();
@@ -98,9 +102,6 @@ export default function NewRecipe({match}) {
   // const [ingredients, setIngredients] = useState();
   // const [serving, setServing] = useState();
   // const [instruction, setInstruction] = useState();
-
-  
-
 
   // function handleNameChange(e) {
   //   setRecipeName(e.target.value)
@@ -199,13 +200,6 @@ export default function NewRecipe({match}) {
     // } 
   }
 
-  console.log(values)
-
-  const handleChangeImg = e  => {
-    if (e.target.files[0]){
-      setImg(e.target.files[0])
-    }
-  }
 
   const handleUpload = () => {
     const time = new Date().getTime()
@@ -215,11 +209,12 @@ export default function NewRecipe({match}) {
     uploadTask.on(
       "state_changed",
       snapshot => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setProgress(progress)
-        setImgName(`${time}${img.name}`)
+        const name = `${time}${img.name}`
+        setImgName(name)
+        // setValues.imgName(name)
+        setValues(prevState => ({...prevState, imgName : name}))
+        // setValues.imgName(name)
+        console.log(name) 
       },
       error => {
         console.log(error)
@@ -234,6 +229,9 @@ export default function NewRecipe({match}) {
           console.log(url)
           setUrl(url)
           // setValues.imgUrl(url)
+          setValues(prevState => ({...prevState, imgUrl : url}))
+          console.log(values)
+          // setValues.imgUrl(url)
         })
       }
     )
@@ -241,6 +239,7 @@ export default function NewRecipe({match}) {
 
 
   const addRecipe = async () => {
+    console.log(values)
     try {
       const response = await axios.post(`/recipes/create`, {
         recipeName: values.recipeName,
@@ -250,7 +249,7 @@ export default function NewRecipe({match}) {
         preTime: values.preTime,
         cookTime: values.cookTime,
         ingredients: values.ingredients,
-        serving: values.serving,
+        servings: values.servings,
         instruction: values.instruction
       });
       console.log(JSON.stringify(values.RecipeName))
@@ -265,22 +264,12 @@ export default function NewRecipe({match}) {
       // if(values.recipeName){
       //   setValid(true)
       // } 
+      handleUpload()
       setSubmitted(true)
-      handleUpload();
       addRecipe();
       // console.log({recipeName})
       console.log(values)
     }
-
-  //   const handleSignUp = async (e) =>{
-  //     e.preventDefault()
-  //     const res = await signup({username,password});
-  //     if (res.data.auth){
-  //       authApi.setAuth(true)
-  //     }
-  // }
-
-  
 
   return (
     <Container component="main" maxWidth="xs">

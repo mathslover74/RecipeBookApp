@@ -110,7 +110,9 @@ export default function Recipes({recipes}) {
           />
           <CardMedia
             className={classes.media}
-            image="/static/images/cards/paella.jpg"
+            // image="http://via.placeholder.com/200x200"
+            image= {recipe.imgUrl}
+            // image="https://firebasestorage.googleapis.com/v0/b/recipeapp-react.appspot.com/o/images%2F1622986005066Lays_chips.jpeg?alt=media&token=884a7579-bff9-4b07-964e-dae958557f42"
             title= {recipe.recipeName}
           />
           </CardActionArea>
