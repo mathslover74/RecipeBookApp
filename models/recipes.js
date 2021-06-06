@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const recipeSchema = new mongoose.Schema({
   recipeName: String,
   //not here as image will be in firebase
-  img: String,
+  imgUrl: String,
+  imgName: String,
   // recipeId: String,
   createdBy: String,
   //for future
