@@ -10,7 +10,7 @@ export default function ReactFireBaseImg() {
   const [previewImg, setPreviewImg] = useState('');
   const [progress, setProgress] = useState(0)
 
-  const fileInputRef = useRef();
+  // const fileInputRef = useRef();
 
   useEffect(() => {
     if (img) {
@@ -32,7 +32,10 @@ export default function ReactFireBaseImg() {
   }
 
   const handleUpload = () => {
-    const uploadTask = storage.ref(`images/${img.name}`).put(img);
+    const time = new Date().getTime()
+   
+    // const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+    const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
     uploadTask.on(
       "state_changed",
       snapshot => {
@@ -45,9 +48,10 @@ export default function ReactFireBaseImg() {
         console.log(error)
       },
       () => {
+        
         storage
         .ref("images")
-        .child(img.name)
+        .child(`${time}${img.name}`)
         .getDownloadURL()
         .then(url => {
           console.log(url)
@@ -57,6 +61,18 @@ export default function ReactFireBaseImg() {
     )
   };
   console.log("img: ", img)
+
+  const deleteImg = () => {
+    const storageRef = storage.ref() 
+    const imgRef = storageRef.child('images/Lays_chips.jpeg');
+
+    imgRef.delete().then(()=>{
+      console.log('file deleted')
+    }).catch((err) => {
+      console.log(err)
+    })
+
+  }
 
   
   return(
@@ -72,43 +88,37 @@ export default function ReactFireBaseImg() {
   { previewImg ? (
     <img src={previewImg} style = {{width:'200px'}, {height:'200px'}} />
   ): (
-    <button style = {
-      {width: '200px'},
-      {height: '200px'}
-    }
-     onClick={(event) => {
-      event.preventDefault();
-      fileInputRef.current.click()
-    }}>Add Image</button>
+    <img src='http://via.placeholder.com/200x200'/>
   )}
 
-    <input 
+    {/* <input 
     type='file' 
     style={{display: 'none'}} 
     ref={fileInputRef} 
     accept='image/*'
     onChange={(event) => {
       const file = event.target.files[0]
-      if (file && file.type.substr(0,5) === 'imgage') {
+      if (file && file.type.substr(0,5) === 'image') {
         setImg(file);
       }else {
         setImg(null)
       }
     }}
-    />
+    /> */}
 </form>
 
 
 
     <br/>
-    <input type='file' onChange={handleChange} />
+    <input type='file' accept='image/*' onChange={handleChange} />
     <button onClick={handleUpload}Upload>Upload</button>
     <br/>
     <img src={setUrl || 'http://via.placeholder.com/300x400'} alt='firebase-img'/>
     {url}
     <br/>
     <img src={url || 'http://via.placeholder.com/300x400'} alt='firebase-img'/>
-    
+
+   <button onClick={deleteImg}>Delete Image</button> 
     </>
   )
 } 
