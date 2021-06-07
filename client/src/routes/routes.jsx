@@ -33,6 +33,8 @@ function Routes(){
       <RouteReg path='/firebase' component={() => withLayout(Firebase)}/>
       <RouteReg path='/signin' component={() => withLayout(SignIn)}/>
       <RouteReg path='/signup' component={() => withLayout(SignUp)}/>
+      {/* <RouteReg path='/browseRecipe' component={() => withLayout(BrowseRecipe)}/> */}
+
       {/* <RouteReg path='/recipe/update' component={UpdateRecipe}/> */}
       {/* <RouteReg path='/recipe/update/:id' component={UpdateRecipe}/> */}
 

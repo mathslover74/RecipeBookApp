@@ -8,6 +8,7 @@ import {signout} from './auth-api'
 import AuthApi from '../utils/AuthAPI'
 import axios from "axios"
 import { Link } from 'react-router-dom';
+import './styles/nav.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -88,16 +89,18 @@ useEffect(()=>{
     path: '/browseRecipe',
     title: SuperUser ? 'Browse & Edit All Recipes' : 'Browse Recipes',
   }, {
-
+ 
   } ]
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
+      
         <Toolbar>
+        <Button href='/signin' color="inherit"><span id ='fonts'>JiakSiMe?</span></Button>
           {navigation.map((n, index) => (
             n.display && <Link to={n.path}>
-              <Button>{n.title}</Button>
+              <Button style={{color: 'rgba(255,255,255)'}} > {n.title} </Button>
             </Link>
           ))}
           {/* {SignIn &&
@@ -107,8 +110,9 @@ useEffect(()=>{
               My Recipes
               </Button>
               </Link>
-          }
-          {SuperUser ? 
+          } */}
+          
+          {/* {SuperUser ? 
           // <Button href='/browseRecipe' color="inherit">Browse & Edit All Recipes</Button> 
           <Link to={`/browseRecipe`} style={{textDecoration: 'none'},{color: 'rgba(255,255,255)'}}>
             <Button color="inherit">Browse & Edit All Recipes</Button> 
@@ -117,9 +121,11 @@ useEffect(()=>{
           <Button color="inherit">Browse Recipes</Button>
           </Link>
         } */}
-          <Typography variant="h6" className={classes.title}>
-           Heading
+
+          <Typography variant="h6" className={classes.title} justify>
+          
           </Typography>
+
           {SignIn ? 
           <Button onClick={handleLogout} color="inherit">Logout</Button> :
           <Button href='/signin' color="inherit">Login</Button>

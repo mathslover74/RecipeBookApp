@@ -51,6 +51,8 @@ export default function UpdateRecipe({match}) {
   const [previewImg, setPreviewImg] = useState('');
   const[recipe, getRecipe] = useState('');
 // const { id } = useParams();
+const classes = useStyles();
+const authApi = useContext(AuthApi)
 
   useEffect(()=>{
     // console.log(JSON.stringify({id}))
@@ -93,6 +95,7 @@ export default function UpdateRecipe({match}) {
   }
   
   const deleteRecipe = async () => {
+    deleteImg()
     try{
       await axios.delete(`/recipes/${match.params.id}`);
       history.go(0)
@@ -138,12 +141,12 @@ export default function UpdateRecipe({match}) {
   
   
   
-  const modifiedRecipe = async () => {
+  const modifiedRecipe = async (userImg,ImgName) => {
     try {
       const response = await axios.put(`/recipes/${match.params.id}`, {
         recipeName: recipe.recipeName,
-        imgUrl: url,
-        imgName: imgName,
+        imgUrl: userImg,
+        imgName: ImgName,
         createdBy: recipe.createdBy,
         preTime: recipe.preTime,
         cookTime: recipe.cookTime,
@@ -172,12 +175,7 @@ export default function UpdateRecipe({match}) {
     })
 
   }
-  
-  
-  
-  const classes = useStyles();
-  const authApi = useContext(AuthApi)
-  
+     
   
   function handleOnChange(e){
     getRecipe( prevState => ({ ...prevState, ...{[e.target.name] : e.target.value}}))
@@ -192,8 +190,42 @@ export default function UpdateRecipe({match}) {
   const handleSubmit = (event) => {
     event.preventDefault();
       deleteImg()
-      setSubmitted(true)
-      modifiedRecipe();
+      const time = new Date().getTime()
+   
+    // const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+    const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+    uploadTask.on(
+      "state_changed",
+      snapshot => {
+        const name = `${time}${img.name}`
+        setImgName(name)
+        // setValues.imgName(name)
+        // setValues(prevState => ({...prevState, imgName : name}))
+        // setValues.imgName(name)
+        console.log(name) 
+      },
+      error => {
+        console.log(error)
+      },
+      () => {
+        
+        storage
+        .ref("images")
+        .child(`${time}${img.name}`)
+        .getDownloadURL()
+        .then(url => {
+          console.log(url)
+          setUrl(url)
+          setSubmitted(true)
+          modifiedRecipe(url,img.name);
+          // setValues.imgUrl(url)
+          // setValues(prevState => ({...prevState, imgUrl : url}))
+          // setValues.imgUrl(url)
+        })
+      }
+    )
+      // setSubmitted(true)
+      // modifiedRecipe();
     }
   
   return (

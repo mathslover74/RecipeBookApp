@@ -49,16 +49,28 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ViewRecipe({match}) {
 
+  const [img, setImg] = useState(null)
   const history = useHistory();
+  const[recipe, getRecipe] = useState('');
+  const [previewImg, setPreviewImg] = useState('');
 // const { id } = useParams();
 
 
   useEffect(()=>{
     // console.log(JSON.stringify({id}))
     fetchOneRecipe();
-  },[])
-  
-  const[recipe, getRecipe] = useState('');
+    if (img) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImg(reader.result)
+        
+      }
+      reader.readAsDataURL(img);
+    }else {
+      setPreviewImg(null)
+    }
+  },[img])
+ 
   // console.log(match.params)
 
   const fetchOneRecipe = async () => {
@@ -104,108 +116,39 @@ export default function ViewRecipe({match}) {
         </Button>
         <br />
         <Typography component="h1" variant="h5">
-         {recipe.recipeName}
+         
+         <h1>{recipe.recipeName}</h1>
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
+            {!img ? 
+            (<img src={recipe.imgUrl} style = {{width:'200px'}, {height:'200px'}}/>)
+            : 
+            (<img src='http://via.placeholder.com/300x400' style = {{width:'200px'}, {height:'200px'}} />)
+            }
+
+            <CardContent>
+              <h3>Instruction</h3>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {recipe.instruction}
+            </Typography>
+            </CardContent>
+
+  
+              <h3>Ingredients Required</h3>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {recipe.ingredients}
+            </Typography>
+
+            <CardContent>
+              <h4>Preparation Time : {recipe.preTime}</h4>
+              <h4>Cooking Time : {recipe.cookTime}</h4>
+              <h4>Number of Servings: {recipe.servings}</h4>
+
+            </CardContent>
               
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.recipeName}
-                id="recipeName"
-                // label="Recipe Name"
-                name="recipeName"
-                onChange ={handleOnChange}
-              />
-              {/* {submitted && values.recipeName==='' ? <span>Please enter Recipe Name</span> : null} */}
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.img}
-                name="img"
-                // label="img"
-                type="img"
-                id="img"
-                onChange ={handleOnChange}
-              />
-            </Grid>
-  
-            <Grid item xs={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.preTime}
-                name="preTime"
-                // label="Preparation Time (Min)"
-                type="preTime"
-                id="preTime"
-                onChange ={handleOnChange}
-              />
-            </Grid>
-  
-            <Grid item xs={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.cookTime}
-                name="cookTime"
-                // label="Cook Time (Min)"
-                type="cookTime"
-                id="cookTime"
-                onChange ={handleOnChange}
-              />
-            </Grid>
-  
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.ingredients}
-                name="ingredients"
-                // label="Ingredients"
-                type="ingredients"
-                id="ingredients"
-                onChange ={handleOnChange}
-              />
-            </Grid>
-  
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.servings}
-                name="servings"
-                // label="Number of Servings"
-                type="servings"
-                id="servings"
-                onChange ={handleOnChange}
-              />
-            </Grid>
-  
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.instruction}
-                name="instruction"
-                // label="Instruction/Steps"
-                type="instruction"
-                id="instruction"
-                onChange ={handleOnChange}
-              />
-            </Grid>
-            
           </Grid> 
   
           <Grid container justify="flex-end">
@@ -214,86 +157,6 @@ export default function ViewRecipe({match}) {
       </div>
       <Box mt={5}>
       </Box>
-
-      <Box p={1} width='100%'>
-          <Card className={classes.root}>
-          {/* <CardActionArea href={`/recipe/60b4ee39107017402d582fa2`} > */}
-          {/* <CardActionArea href=`/recipe/${recipe._id}` > */}
-          <CardActionArea href={`/recipe/${recipe._id}/`}>
-          {/* {SuperUser ?
-          <Link key={`${index}_id`} to={`/recipe/${recipe._id}`}>{recipe.recipeName} </Link> 
-          :
-          <Link key={`${index}_id`} to={`/viewrecipe/${recipe._id}`}>{recipe.recipeName} </Link>
-          } */}
-          <CardHeader
-            // title = {recipe.recipeName}
-            // subheader = {recipe._id}
-            subheader = {recipe.createdBy}
-          />
-          <CardMedia
-            className={classes.media}
-            // image="http://via.placeholder.com/200x200"
-            image= {recipe.imgUrl}
-            // image="https://firebasestorage.googleapis.com/v0/b/recipeapp-react.appspot.com/o/images%2F1622986005066Lays_chips.jpeg?alt=media&token=884a7579-bff9-4b07-964e-dae958557f42"
-            title= {recipe.recipeName}
-          />
-          </CardActionArea>
-          
-
-
-          <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
-              This impressive paella is a perfect party dish and a fun meal to cook together with your
-              guests. Add 1 cup of frozen peas along with the mussels, if you like.
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            {/* <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
-            </IconButton> */}
-            {/* <IconButton aria-label="share">
-              <ShareIcon />
-            </IconButton>
-            <IconButton
-              className={clsx(classes.expand, {
-                [classes.expandOpen]: expanded,
-              })}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-            >
-              <ExpandMoreIcon />
-            </IconButton> */}
-          </CardActions>
-          {/* <Collapse in={expanded} timeout="auto" unmountOnExit> */}
-            {/* <CardContent>
-              <Typography paragraph>Method:</Typography>
-              <Typography paragraph>
-                Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
-                minutes.
-              </Typography>
-              <Typography paragraph>
-                Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
-                heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
-                browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
-                and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
-                pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
-                saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-              </Typography>
-              <Typography paragraph>
-                Add rice and stir very gently to distribute. Top with artichokes and peppers, and cook
-                without stirring, until most of the liquid is absorbed, 15 to 18 minutes. Reduce heat to
-                medium-low, add reserved shrimp and mussels, tucking them down into the rice, and cook
-                again without stirring, until mussels have opened and rice is just tender, 5 to 7
-                minutes more. (Discard any mussels that don’t open.)
-              </Typography>
-              <Typography>
-                Set aside off of the heat to let rest for 10 minutes, and then serve.
-              </Typography>
-            </CardContent> */}
-          {/* </Collapse> */}
-          </Card>  
-        </Box>
     </Container>
       </div>
     

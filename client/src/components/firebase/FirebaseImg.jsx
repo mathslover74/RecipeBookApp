@@ -64,7 +64,7 @@ export default function ReactFireBaseImg() {
 
   const deleteImg = () => {
     const storageRef = storage.ref() 
-    const imgRef = storageRef.child('images/1622969833477Lays_chips.jpeg');
+    const imgRef = storageRef.child('images/1623059860275Lays_chips.jpeg');
     // gs://recipeapp-react.appspot.com/images/
 
     imgRef.delete().then(()=>{

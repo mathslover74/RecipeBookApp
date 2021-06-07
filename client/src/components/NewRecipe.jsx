@@ -23,7 +23,6 @@ const fetchUserID = async() => {
     console.log(err)
   }
 }
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -201,8 +200,70 @@ export default function NewRecipe({match}) {
   }
 
 
-  const handleUpload = () => {
-    const time = new Date().getTime()
+  // const handleUpload = () => {
+  //   const time = new Date().getTime()
+   
+  //   // const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+  //   const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+  //   uploadTask.on(
+  //     "state_changed",
+  //     snapshot => {
+  //       const name = `${time}${img.name}`
+  //       setImgName(name)
+  //       // setValues.imgName(name)
+  //       setValues(prevState => ({...prevState, imgName : name}))
+  //       // setValues.imgName(name)
+  //       console.log(name) 
+  //     },
+  //     error => {
+  //       console.log(error)
+  //     },
+  //     () => {
+        
+  //       storage
+  //       .ref("images")
+  //       .child(`${time}${img.name}`)
+  //       .getDownloadURL()
+  //       .then(url => {
+  //         console.log(url)
+  //         setUrl(url)
+  //         // setValues.imgUrl(url)
+  //         setValues(prevState => ({...prevState, imgUrl : url}))
+  //         console.log(values)
+  //         // setValues.imgUrl(url)
+  //       })
+  //     }
+  //   )
+  // };
+
+
+  const addRecipe = async (userImgURL, ImgName) => {
+    console.log(values)
+    try {
+      const response = await axios.post(`/recipes/create`, {
+        recipeName: values.recipeName,
+        imgUrl: userImgURL,
+        imgName: ImgName,
+        createdBy: values.createdBy,
+        preTime: values.preTime,
+        cookTime: values.cookTime,
+        ingredients: values.ingredients,
+        servings: values.servings,
+        instruction: values.instruction
+      });
+      console.log(JSON.stringify(values.RecipeName))
+      console.log(response)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+      // if(values.recipeName){
+      //   setValid(true)
+      // } 
+      const time = new Date().getTime()
    
     // const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
     const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
@@ -230,43 +291,16 @@ export default function NewRecipe({match}) {
           setUrl(url)
           // setValues.imgUrl(url)
           setValues(prevState => ({...prevState, imgUrl : url}))
+          setSubmitted(true)
+          addRecipe(url,(`${time}${img.name}`));
           console.log(values)
           // setValues.imgUrl(url)
         })
       }
     )
-  };
-
-
-  const addRecipe = async () => {
-    console.log(values)
-    try {
-      const response = await axios.post(`/recipes/create`, {
-        recipeName: values.recipeName,
-        imgUrl: url,
-        imgName: imgName,
-        createdBy: values.createdBy,
-        preTime: values.preTime,
-        cookTime: values.cookTime,
-        ingredients: values.ingredients,
-        servings: values.servings,
-        instruction: values.instruction
-      });
-      console.log(JSON.stringify(values.RecipeName))
-      console.log(response)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-      // if(values.recipeName){
-      //   setValid(true)
-      // } 
-      handleUpload()
-      setSubmitted(true)
-      addRecipe();
+      // handleUpload()
+      // setSubmitted(true)
+      // addRecipe();
       // console.log({recipeName})
       console.log(values)
     }

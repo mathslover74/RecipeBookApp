@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
+  const [error, setError] = useState(false)
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [superUser, setSuperUser] = useState('false');
@@ -66,7 +67,8 @@ export default function SignUp() {
       const res = await signup({username,password,superUser});
       if (res.data.auth){
         authApi.setAuth(true)
-      }
+      } else
+      setError(true)
   }
   
   return (
@@ -79,6 +81,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
+        {error ? <h3 style={{color:'red'}}> Username is used please repick</h3> : null}
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
