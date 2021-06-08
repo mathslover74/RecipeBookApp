@@ -5,6 +5,7 @@ import React, { useState, useContext, useEffect } from 'react';
 //   Route,
 //   useParams
 // } from "react-router-dom";
+import {storage} from "./firebase/index";
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import Button from '@material-ui/core/Button';
@@ -44,15 +45,39 @@ const useStyles = makeStyles((theme) => ({
 export default function UpdateRecipe({match}) {
 
   const history = useHistory();
+  const [img, setImg] = useState(null)
+  const [url, setUrl] = useState()
+  const [imgName, setImgName] = useState()
+  const [previewImg, setPreviewImg] = useState('');
+  const[recipe, getRecipe] = useState('');
 // const { id } = useParams();
-
+const classes = useStyles();
+const authApi = useContext(AuthApi)
 
   useEffect(()=>{
     // console.log(JSON.stringify({id}))
     fetchOneRecipe();
-  },[])
+    if (img) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImg(reader.result)
+        
+      }
+      reader.readAsDataURL(img);
+    }else {
+      setPreviewImg(null)
+    }
+  },[img])
+
+  const handleChangeImg = e  => {
+    if (e.target.files[0]){
+      setImg(e.target.files[0])
+      console.log(e.target.files[0])
+      // setValues()
+    }
+  }
   
-  const[recipe, getRecipe] = useState('');
+  
   // console.log(match.params)
 
   const fetchOneRecipe = async () => {
@@ -62,11 +87,15 @@ export default function UpdateRecipe({match}) {
     .then((res)=>{
       // console.log(res.data)
       getRecipe(res.data)
+      console.log(res.data.imgUrl)
+      // setImg(res.data.imgUrl)
+
     })
     .catch(err => console.log(err))
   }
   
   const deleteRecipe = async () => {
+    deleteImg()
     try{
       await axios.delete(`/recipes/${match.params.id}`);
       history.go(0)
@@ -74,14 +103,50 @@ export default function UpdateRecipe({match}) {
       console.log(err)
     }
   }
+
+    const handleUpload = () => {
+    const time = new Date().getTime()
+   
+    // const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+    const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+    uploadTask.on(
+      "state_changed",
+      snapshot => {
+        const name = `${time}${img.name}`
+        setImgName(name)
+        // setValues.imgName(name)
+        // setValues(prevState => ({...prevState, imgName : name}))
+        // setValues.imgName(name)
+        console.log(name) 
+      },
+      error => {
+        console.log(error)
+      },
+      () => {
+        
+        storage
+        .ref("images")
+        .child(`${time}${img.name}`)
+        .getDownloadURL()
+        .then(url => {
+          console.log(url)
+          setUrl(url)
+          // setValues.imgUrl(url)
+          // setValues(prevState => ({...prevState, imgUrl : url}))
+          // setValues.imgUrl(url)
+        })
+      }
+    )
+  };
   
   
   
-  const modifiedRecipe = async () => {
+  const modifiedRecipe = async (userImg,ImgName) => {
     try {
       const response = await axios.put(`/recipes/${match.params.id}`, {
         recipeName: recipe.recipeName,
-        img: recipe.img,
+        imgUrl: userImg,
+        imgName: ImgName,
         createdBy: recipe.createdBy,
         preTime: recipe.preTime,
         cookTime: recipe.cookTime,
@@ -95,11 +160,22 @@ export default function UpdateRecipe({match}) {
       console.log(err)
     }
   }
-  
-  
-  const classes = useStyles();
-  const authApi = useContext(AuthApi)
-  
+
+  const deleteImg = () => {
+    const storageRef = storage.ref() 
+    console.log(recipe.imgName)
+    const imgRef = storageRef.child(`images/${recipe.imgName}`);
+    
+    // gs://recipeapp-react.appspot.com/images/
+
+    imgRef.delete().then(()=>{
+      console.log(' img file deleted')
+    }).catch((err) => {
+      console.log(err)
+    })
+
+  }
+     
   
   function handleOnChange(e){
     getRecipe( prevState => ({ ...prevState, ...{[e.target.name] : e.target.value}}))
@@ -113,14 +189,44 @@ export default function UpdateRecipe({match}) {
   
   const handleSubmit = (event) => {
     event.preventDefault();
-      setSubmitted(true)
-      modifiedRecipe();
+      deleteImg()
+      const time = new Date().getTime()
+   
+    // const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+    const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+    uploadTask.on(
+      "state_changed",
+      snapshot => {
+        const name = `${time}${img.name}`
+        setImgName(name)
+        // setValues.imgName(name)
+        // setValues(prevState => ({...prevState, imgName : name}))
+        // setValues.imgName(name)
+        console.log(name) 
+      },
+      error => {
+        console.log(error)
+      },
+      () => {
+        
+        storage
+        .ref("images")
+        .child(`${time}${img.name}`)
+        .getDownloadURL()
+        .then(url => {
+          console.log(url)
+          setUrl(url)
+          setSubmitted(true)
+          modifiedRecipe(url,img.name);
+          // setValues.imgUrl(url)
+          // setValues(prevState => ({...prevState, imgUrl : url}))
+          // setValues.imgUrl(url)
+        })
+      }
+    )
+      // setSubmitted(true)
+      // modifiedRecipe();
     }
-  
-  const handleDelete = (e) => {
-    
-  }
-  
   
   return (
       <div>
@@ -140,7 +246,7 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.recipeName}
+                value={String(recipe.recipeName)}
                 id="recipeName"
                 label="Recipe Name"
                 name="recipeName"
@@ -149,17 +255,34 @@ export default function UpdateRecipe({match}) {
               {/* {submitted && values.recipeName==='' ? <span>Please enter Recipe Name</span> : null} */}
             </Grid>
             <Grid item xs={12}>
-              <TextField
+
+            {/* <img src='http://via.placeholder.com/200x200'/> */}
+            {!img ? 
+            (<img src={recipe.imgUrl} style = {{width:'200px'}, {height:'200px'}}/>)
+            : 
+            (<img src={previewImg} style = {{width:'200px'}, {height:'200px'}} />)
+            }
+
+
+            {/* { previewImg ? (
+              <img src={previewImg} style = {{width:'200px'}, {height:'200px'}} />
+            ): (
+              <img src='http://via.placeholder.com/200x200'/>
+            )} */}
+            
+            <input type='file' accept='image/*' onChange={handleChangeImg} />
+
+              {/* <TextField
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.img}
+                value={String(recipe.img)}
                 name="img"
                 label="img"
                 type="img"
                 id="img"
                 onChange ={handleOnChange}
-              />
+              /> */}
             </Grid>
   
             <Grid item xs={6}>
@@ -167,7 +290,7 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.preTime}
+                value={String(recipe.preTime)}
                 name="preTime"
                 label="Preparation Time (Min)"
                 type="preTime"
@@ -181,7 +304,7 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.cookTime}
+                value={String(recipe.cookTime)}
                 name="cookTime"
                 label="Cook Time (Min)"
                 type="cookTime"
@@ -195,7 +318,7 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.ingredients}
+                value={String(recipe.ingredients)}
                 name="ingredients"
                 label="Ingredients"
                 type="ingredients"
@@ -209,12 +332,12 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.servings}
+                value={String(recipe.servings)}
                 name="servings"
                 label="Number of Servings"
                 type="servings"
                 id="servings"
-                onChange ={handleOnChange}
+                onChange ={handleOnChange}ß
               />
             </Grid>
   
@@ -223,7 +346,7 @@ export default function UpdateRecipe({match}) {
                 variant="outlined"
                 required
                 fullWidth
-                value={recipe.instruction}
+                value={String(recipe.instruction)}
                 name="instruction"
                 label="Instruction/Steps"
                 type="instruction"

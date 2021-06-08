@@ -19,8 +19,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" to="https://material-ui.com/">
-        Your Website
+      <Link >
+        JiakSimi
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function SignIn() {
+  const [error, setError] = useState(false)
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const authApi = useContext(AuthApi);
@@ -74,7 +75,9 @@ export default function SignIn() {
     console.log(res)
     if(res.data.auth){
       authApi.setAuth(true)
-    }  
+    }  else {
+      setError(true)
+    }
   }
 
   return (
@@ -87,6 +90,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
+        {error ? <h3 style={{color:'red'}}> Wrong Username or Password</h3> : null}
         <form className={classes.form}>
           <TextField
             variant="outlined"
@@ -112,10 +116,10 @@ export default function SignIn() {
             autoComplete="current-password"
             onChange ={handleOnChange}
           />
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
-          />
+          /> */}
           <Button
             type="submit"
             fullWidth
@@ -128,9 +132,9 @@ export default function SignIn() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              {/* <Link href="#" variant="body2">
                 Forgot password?
-              </Link>
+              </Link> */}
             </Grid>
             <Grid item>
               <Link href="/signup" variant="body2">

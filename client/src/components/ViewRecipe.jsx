@@ -8,10 +8,16 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useParams , use} from 'react-router-dom';
 import { useHistory , Link} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import CardHeader from '@material-ui/core/CardHeader';
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -43,16 +49,28 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ViewRecipe({match}) {
 
+  const [img, setImg] = useState(null)
   const history = useHistory();
+  const[recipe, getRecipe] = useState('');
+  const [previewImg, setPreviewImg] = useState('');
 // const { id } = useParams();
 
 
   useEffect(()=>{
     // console.log(JSON.stringify({id}))
     fetchOneRecipe();
-  },[])
-  
-  const[recipe, getRecipe] = useState('');
+    if (img) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImg(reader.result)
+        
+      }
+      reader.readAsDataURL(img);
+    }else {
+      setPreviewImg(null)
+    }
+  },[img])
+ 
   // console.log(match.params)
 
   const fetchOneRecipe = async () => {
@@ -92,114 +110,45 @@ export default function ViewRecipe({match}) {
         <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Link to={'/browseRecipe'} >
-        <Button variant='contained' color='primary'>Return to Browse Recipe
+        <Button variant='contained' color='primary' onClick={() => {
+          history.push('/browseRecipe')
+        }}>Return to Browse Recipe
         </Button>
-        </Link>
         <br />
         <Typography component="h1" variant="h5">
-         {recipe.recipeName}
+         
+         <h1>{recipe.recipeName}</h1>
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
+            {!img ? 
+            (<img src={recipe.imgUrl} style = {{width:'200px'}, {height:'200px'}}/>)
+            : 
+            (<img src='http://via.placeholder.com/300x400' style = {{width:'200px'}, {height:'200px'}} />)
+            }
+
+            <CardContent>
+              <h3>Instruction</h3>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {recipe.instruction}
+            </Typography>
+            </CardContent>
+
+  
+              <h3>Ingredients Required</h3>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {recipe.ingredients}
+            </Typography>
+
+            <CardContent>
+              <h4>Preparation Time : {recipe.preTime}</h4>
+              <h4>Cooking Time : {recipe.cookTime}</h4>
+              <h4>Number of Servings: {recipe.servings}</h4>
+
+            </CardContent>
               
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.recipeName}
-                id="recipeName"
-                // label="Recipe Name"
-                name="recipeName"
-                onChange ={handleOnChange}
-              />
-              {/* {submitted && values.recipeName==='' ? <span>Please enter Recipe Name</span> : null} */}
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.img}
-                name="img"
-                // label="img"
-                type="img"
-                id="img"
-                onChange ={handleOnChange}
-              />
-            </Grid>
-  
-            <Grid item xs={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.preTime}
-                name="preTime"
-                // label="Preparation Time (Min)"
-                type="preTime"
-                id="preTime"
-                onChange ={handleOnChange}
-              />
-            </Grid>
-  
-            <Grid item xs={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.cookTime}
-                name="cookTime"
-                // label="Cook Time (Min)"
-                type="cookTime"
-                id="cookTime"
-                onChange ={handleOnChange}
-              />
-            </Grid>
-  
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.ingredients}
-                name="ingredients"
-                // label="Ingredients"
-                type="ingredients"
-                id="ingredients"
-                onChange ={handleOnChange}
-              />
-            </Grid>
-  
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.servings}
-                name="servings"
-                // label="Number of Servings"
-                type="servings"
-                id="servings"
-                onChange ={handleOnChange}
-              />
-            </Grid>
-  
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                value={recipe.instruction}
-                name="instruction"
-                // label="Instruction/Steps"
-                type="instruction"
-                id="instruction"
-                onChange ={handleOnChange}
-              />
-            </Grid>
-            
           </Grid> 
   
           <Grid container justify="flex-end">

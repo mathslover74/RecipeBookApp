@@ -10,7 +10,7 @@ const users = [];
 
 // Enviroment variables
 const mongoURI = process.env.MONGODB_URI;
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8080;
 const path = require("path");
 
 //Controller
@@ -22,14 +22,13 @@ const bodyParser = require("body-parser");
 // Middleware
 // allows us to use put and delete methods
 app.use(express.static(path.join(__dirname, "client", "build")));
-app.use(express.json());
 app.use(methodOverride("_method"));
 // parses info from our input fields into an object
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
   session({
-    secret: "hello",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },
@@ -54,6 +53,10 @@ app.use("/users", usersController);
 app.use("/recipes", recipesController);
 app.get("*", (req, res) => {
   res.status(404).json("Sorry, Page not found!");
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 app.listen(PORT, () => console.log("server is running on port", PORT));

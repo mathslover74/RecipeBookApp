@@ -97,7 +97,46 @@ export default function Recipes({recipes}) {
           <Card className={classes.root}>
           {/* <CardActionArea href={`/recipe/60b4ee39107017402d582fa2`} > */}
           {/* <CardActionArea href=`/recipe/${recipe._id}` > */}
-          <CardActionArea href={`/recipe/${recipe._id}/`}>
+          
+          {/* <CardActionArea component={Link} to={`/recipe/${recipe._id}/`} >
+           */}
+
+           {SuperUser ?
+             <CardActionArea component={Link} to={`/recipe/${recipe._id}`}>
+               <h2>{recipe.recipeName}</h2>
+               {/* <Link key={`${index}_id`} to={`/recipe/${recipe._id}`}>{recipe.recipeName} </Link>  */}
+                <CardHeader
+                  // title = {recipe.recipeName}
+                  // subheader = {recipe._id}
+                  subheader = {`Created by ${recipe.createdBy}`}
+                />
+                <CardMedia
+                  className={classes.media}
+                  // image="http://via.placeholder.com/200x200"
+                  image= {recipe.imgUrl}
+                  // image="https://firebasestorage.googleapis.com/v0/b/recipeapp-react.appspot.com/o/images%2F1622986005066Lays_chips.jpeg?alt=media&token=884a7579-bff9-4b07-964e-dae958557f42"
+                  title= {recipe.recipeName}
+                />
+             </CardActionArea>
+             :
+             <CardActionArea component={Link} to={`/viewrecipe/${recipe._id}`}>
+               <h2>{recipe.recipeName}</h2>
+             {/* <Link key={`${index}_id`} to={`/viewrecipe/${recipe._id}`}>{recipe.recipeName} </Link>  */}
+              <CardHeader
+                // title = {recipe.recipeName}
+                // subheader = {recipe._id}
+                subheader = {`Created by ${recipe.createdBy}`}
+              />
+              <CardMedia
+                className={classes.media}
+                // image="http://via.placeholder.com/200x200"
+                image= {recipe.imgUrl}
+                // image="https://firebasestorage.googleapis.com/v0/b/recipeapp-react.appspot.com/o/images%2F1622986005066Lays_chips.jpeg?alt=media&token=884a7579-bff9-4b07-964e-dae958557f42"
+                title= {recipe.recipeName}
+              />
+           </CardActionArea>
+          }
+           {/* <CardActionArea >
           {SuperUser ?
           <Link key={`${index}_id`} to={`/recipe/${recipe._id}`}>{recipe.recipeName} </Link> 
           :
@@ -110,10 +149,12 @@ export default function Recipes({recipes}) {
           />
           <CardMedia
             className={classes.media}
-            image="/static/images/cards/paella.jpg"
+            // image="http://via.placeholder.com/200x200"
+            image= {recipe.imgUrl}
+            // image="https://firebasestorage.googleapis.com/v0/b/recipeapp-react.appspot.com/o/images%2F1622986005066Lays_chips.jpeg?alt=media&token=884a7579-bff9-4b07-964e-dae958557f42"
             title= {recipe.recipeName}
           />
-          </CardActionArea>
+          </CardActionArea> */}
           
 
 
