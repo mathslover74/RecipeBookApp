@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-
+import {storage} from "./firebase/index";
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -11,17 +11,18 @@ import Container from '@material-ui/core/Container';
 import AuthApi from '../utils/AuthAPI';
 const axios = require('axios');
 
+
+
 const fetchUserID = async() => {
   try{
     const fetchUserID = await fetch ('/users/profile');
     const userID = await fetchUserID.json();
-    console.log(userID)
+    // console.log(userID)
     return userID
   } catch (err) {
     console.log(err)
   }
 }
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -43,15 +44,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NewRecipe({match}) {
-  useEffect(() => {
-    // fetchUserID();
-    fetchUserData()
-  },[]);
 
+  const classes = useStyles();
+  const authApi = React.useContext(AuthApi);
 
+  const [submitted, setSubmitted] = useState(false)
+  const [img, setImg] = useState(null)
+  const [url, setUrl] = useState()
+  const [imgName, setImgName] = useState()
+  const [previewImg, setPreviewImg] = useState('');
   const [values, setValues] = useState( {
     recipeName:'',
-    img:'',
+    imgUrl:'',
+    imgName:'',
     createdBy:'',
     preTime:'',
     cookTime:'',
@@ -59,6 +64,34 @@ export default function NewRecipe({match}) {
     servings:'',
     instruction:'',
   })
+
+  // useEffect(() => {
+  //   // fetchUserID();
+  //   fetchUserData()
+
+  // },[]);
+
+  useEffect(() => {
+    fetchUserData()
+    if (img) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImg(reader.result)
+        
+      }
+      reader.readAsDataURL(img);
+    }else {
+      setPreviewImg(null)
+    }
+  },[img])
+
+  const handleChangeImg = e  => {
+    if (e.target.files[0]){
+      setImg(e.target.files[0])
+      console.log(e.target.files[0])
+      // setValues()
+    }
+  }
 
   // const [recipeName, setRecipeName] = useState();
   // const [img, setImg] = useState();
@@ -68,10 +101,6 @@ export default function NewRecipe({match}) {
   // const [ingredients, setIngredients] = useState();
   // const [serving, setServing] = useState();
   // const [instruction, setInstruction] = useState();
-  const classes = useStyles();
-  const authApi = React.useContext(AuthApi);
-  
-
 
   // function handleNameChange(e) {
   //   setRecipeName(e.target.value)
@@ -146,9 +175,6 @@ export default function NewRecipe({match}) {
 
   // }
 
-  const [submitted, setSubmitted] = useState(false)
-
-
   // const [valid, setValid]=useState(false)
 
   // const fetchUserData = async () => {
@@ -173,19 +199,56 @@ export default function NewRecipe({match}) {
     // } 
   }
 
-  console.log(values)
+
+  // const handleUpload = () => {
+  //   const time = new Date().getTime()
+   
+  //   // const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+  //   const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+  //   uploadTask.on(
+  //     "state_changed",
+  //     snapshot => {
+  //       const name = `${time}${img.name}`
+  //       setImgName(name)
+  //       // setValues.imgName(name)
+  //       setValues(prevState => ({...prevState, imgName : name}))
+  //       // setValues.imgName(name)
+  //       console.log(name) 
+  //     },
+  //     error => {
+  //       console.log(error)
+  //     },
+  //     () => {
+        
+  //       storage
+  //       .ref("images")
+  //       .child(`${time}${img.name}`)
+  //       .getDownloadURL()
+  //       .then(url => {
+  //         console.log(url)
+  //         setUrl(url)
+  //         // setValues.imgUrl(url)
+  //         setValues(prevState => ({...prevState, imgUrl : url}))
+  //         console.log(values)
+  //         // setValues.imgUrl(url)
+  //       })
+  //     }
+  //   )
+  // };
 
 
-  const addRecipe = async () => {
+  const addRecipe = async (userImgURL, ImgName) => {
+    console.log(values)
     try {
       const response = await axios.post(`/recipes/create`, {
         recipeName: values.recipeName,
-        img: values.img,
+        imgUrl: userImgURL,
+        imgName: ImgName,
         createdBy: values.createdBy,
         preTime: values.preTime,
         cookTime: values.cookTime,
         ingredients: values.ingredients,
-        serving: values.serving,
+        servings: values.servings,
         instruction: values.instruction
       });
       console.log(JSON.stringify(values.RecipeName))
@@ -200,20 +263,48 @@ export default function NewRecipe({match}) {
       // if(values.recipeName){
       //   setValid(true)
       // } 
-      setSubmitted(true)
-      addRecipe();
+      const time = new Date().getTime()
+   
+    // const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+    const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+    uploadTask.on(
+      "state_changed",
+      snapshot => {
+        const name = `${time}${img.name}`
+        setImgName(name)
+        // setValues.imgName(name)
+        setValues(prevState => ({...prevState, imgName : name}))
+        // setValues.imgName(name)
+        console.log(name) 
+      },
+      error => {
+        console.log(error)
+      },
+      () => {
+        
+        storage
+        .ref("images")
+        .child(`${time}${img.name}`)
+        .getDownloadURL()
+        .then(url => {
+          console.log(url)
+          setUrl(url)
+          // setValues.imgUrl(url)
+          setValues(prevState => ({...prevState, imgUrl : url}))
+          setSubmitted(true)
+          addRecipe(url,(`${time}${img.name}`));
+          console.log(values)
+          // setValues.imgUrl(url)
+        })
+      }
+    )
+      // handleUpload()
+      // setSubmitted(true)
+      // addRecipe();
       // console.log({recipeName})
       console.log(values)
     }
 
-  //   const handleSignUp = async (e) =>{
-  //     e.preventDefault()
-  //     const res = await signup({username,password});
-  //     if (res.data.auth){
-  //       authApi.setAuth(true)
-  //     }
-  // }
-  
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -236,8 +327,15 @@ export default function NewRecipe({match}) {
               />
               {/* {submitted && values.recipeName==='' ? <span>Please enter Recipe Name</span> : null} */}
             </Grid>
+
             <Grid item xs={12}>
-              <TextField
+            { previewImg ? (
+              <img src={previewImg} style = {{width:'200px'}, {height:'200px'}} />
+            ): (
+              <img src='http://via.placeholder.com/200x200'/>
+            )}
+            <input type='file' accept='image/*' onChange={handleChangeImg} />
+              {/* <TextField
                 variant="outlined"
                 required
                 fullWidth
@@ -246,7 +344,7 @@ export default function NewRecipe({match}) {
                 type="img"
                 id="img"
                 onChange ={handleOnChange}
-              />
+              /> */}
             </Grid>
 
             {/* <Grid item xs={12}>

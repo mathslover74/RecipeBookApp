@@ -8,6 +8,7 @@ import {signout} from './auth-api'
 import AuthApi from '../utils/AuthAPI'
 import axios from "axios"
 import { Link } from 'react-router-dom';
+import './styles/nav.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,19 +80,48 @@ useEffect(()=>{
     setSuperUser(res.data.superUser)
   }
 
+  const navigation = [
+  // {
+  //   display: SignIn,
+  //   path: SignIn ? '/browseRecipe' : '/signin',
+  //   title: 'JiakSiMe?'
+  // }, 
+  {
+    display: SignIn,
+    path: '/recipe',
+    title: 'My Recipes',
+  }, {
+    display: SignIn,
+    path: '/browseRecipe',
+    title: SuperUser ? 'Browse & Edit All Recipes' : 'Browse Recipes',
+  }, {
+ 
+  } ]
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
+      
         <Toolbar>
-          {SignIn &&
+          {SignIn ? 
+          <Button color="inherit" component= {Link} to='/browseRecipe' ><span id='fonts'>JiakSiMe?</span></Button>:
+          <Button href='/signin' color="inherit"><span id ='fonts'>JiakSiMe?</span></Button>
+        }
+          {navigation.map((n, index) => (
+            n.display && <Link to={n.path}>
+              <Button style={{color: 'rgba(255,255,255)'}} > {n.title} </Button>
+            </Link>
+          ))}
+          {/* {SignIn &&
           // <Button href='/recipe' color="inherit">My Recipes</Button>
             <Link to={`/recipe`} style={{textDecoration: 'none'}, {color: 'rgba(255,255,255)'}}>
               <Button href='/recipe' color="inherit">
               My Recipes
               </Button>
               </Link>
-          }
-          {SuperUser ? 
+          } */}
+          
+          {/* {SuperUser ? 
           // <Button href='/browseRecipe' color="inherit">Browse & Edit All Recipes</Button> 
           <Link to={`/browseRecipe`} style={{textDecoration: 'none'},{color: 'rgba(255,255,255)'}}>
             <Button color="inherit">Browse & Edit All Recipes</Button> 
@@ -99,10 +129,12 @@ useEffect(()=>{
           <Link to={`/browseRecipe`} style={{textDecoration: 'none'},{color: 'rgba(255,255,255)'}}>
           <Button color="inherit">Browse Recipes</Button>
           </Link>
-        }
-          <Typography variant="h6" className={classes.title}>
-           Heading
+        } */}
+
+          <Typography variant="h6" className={classes.title} justify>
+          
           </Typography>
+
           {SignIn ? 
           <Button onClick={handleLogout} color="inherit">Logout</Button> :
           <Button href='/signin' color="inherit">Login</Button>

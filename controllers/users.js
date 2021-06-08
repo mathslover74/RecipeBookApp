@@ -110,6 +110,8 @@ router.post("/signup", (req, res) => {
 
 router.get("/hassign", (req, res) => {
   if (req.session.user) {
+    console.log("@@@@@@@@@@@@");
+    console.log(req.session);
     console.log(req.session.user);
     return res.json({
       auth: true,
