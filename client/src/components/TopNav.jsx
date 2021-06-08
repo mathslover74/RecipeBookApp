@@ -80,7 +80,13 @@ useEffect(()=>{
     setSuperUser(res.data.superUser)
   }
 
-  const navigation = [{
+  const navigation = [
+  // {
+  //   display: SignIn,
+  //   path: SignIn ? '/browseRecipe' : '/signin',
+  //   title: 'JiakSiMe?'
+  // }, 
+  {
     display: SignIn,
     path: '/recipe',
     title: 'My Recipes',
@@ -97,7 +103,10 @@ useEffect(()=>{
       <AppBar position="static">
       
         <Toolbar>
-        <Button href='/signin' color="inherit"><span id ='fonts'>JiakSiMe?</span></Button>
+          {SignIn ? 
+          <Button color="inherit" component= {Link} to='/browseRecipe' ><span id='fonts'>JiakSiMe?</span></Button>:
+          <Button href='/signin' color="inherit"><span id ='fonts'>JiakSiMe?</span></Button>
+        }
           {navigation.map((n, index) => (
             n.display && <Link to={n.path}>
               <Button style={{color: 'rgba(255,255,255)'}} > {n.title} </Button>
