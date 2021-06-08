@@ -21,8 +21,8 @@ const bodyParser = require("body-parser");
 
 // Middleware
 // allows us to use put and delete methods
-// app.use(express.static(path.join(__dirname, "client", "build")));
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(path.join(__dirname, "client", "build")));
+// app.use(express.static(__dirname + "/public"));
 
 app.use(methodOverride("_method"));
 // parses info from our input fields into an object
@@ -33,7 +33,11 @@ app.use(
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false },
+    cookie: {
+      // secure: false,
+      httpOnly: true,
+      maxAge: parseInt(process.env.SESSION_MAX_AGE),
+    },
   })
 );
 

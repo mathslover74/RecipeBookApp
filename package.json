@@ -4,9 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "Start": "node server.js",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "Start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,7 @@
     "express-session": "^1.17.1",
     "firebase": "^8.6.5",
     "method-override": "^3.0.0",
-    "mongoose": "^5.12.9"
+    "mongoose": "^5.12.9",
+    "path": "^0.12.7"
   }
 }
