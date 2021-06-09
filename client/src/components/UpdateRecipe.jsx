@@ -46,6 +46,7 @@ export default function UpdateRecipe({match}) {
 
   const history = useHistory();
   const [img, setImg] = useState(null)
+  const [sameImg, setSameImg] = useState(true)
   const [url, setUrl] = useState()
   const [imgName, setImgName] = useState()
   const [previewImg, setPreviewImg] = useState('');
@@ -53,6 +54,21 @@ export default function UpdateRecipe({match}) {
 // const { id } = useParams();
 const classes = useStyles();
 const authApi = useContext(AuthApi)
+
+const fetchOneRecipe = async () => {
+  // console.log({id})
+  // axios.get(`/recipes/60abba232d26b32014c74bb1`)
+  axios.get(`/recipes/${match.params.id}`)
+  .then((res)=>{
+    // console.log(res.data)
+    getRecipe(res.data)
+    console.log(res.data.imgUrl)
+    // console.log({recipe})
+    // setImg(res.data.imgUrl)
+
+  })
+  .catch(err => console.log(err))
+}
 
   useEffect(()=>{
     fetchOneRecipe();
@@ -62,11 +78,13 @@ const authApi = useContext(AuthApi)
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImg(reader.result)
+        setSameImg(false)
+        console.log(`${sameImg}`)
         
       }
       reader.readAsDataURL(img);
     }else {
-      setPreviewImg(null)
+      // setPreviewImg(null)
     }
   },[img])
 
@@ -81,20 +99,7 @@ const authApi = useContext(AuthApi)
   
   // console.log(match.params)
 
-  const fetchOneRecipe = async () => {
-    // console.log({id})
-    // axios.get(`/recipes/60abba232d26b32014c74bb1`)
-    axios.get(`/recipes/${match.params.id}`)
-    .then((res)=>{
-      // console.log(res.data)
-      getRecipe(res.data)
-      console.log(res.data.imgUrl)
-      console.log(recipe.imgUrl)
-      // setImg(res.data.imgUrl)
 
-    })
-    .catch(err => console.log(err))
-  }
   
   const deleteRecipe = async () => {
     deleteImg()
@@ -107,6 +112,7 @@ const authApi = useContext(AuthApi)
   }
 
     const handleUpload = () => {
+
     const time = new Date().getTime()
    
     // const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
@@ -191,7 +197,24 @@ const authApi = useContext(AuthApi)
   
   const handleSubmit = (event) => {
     event.preventDefault();
-    // if ({setImg})
+
+    console.log(`${sameImg}`)
+
+    if (`${sameImg}` === 'true') {
+      console.log('true')
+      const url = `${recipe.imgUrl}`
+      const imgName = `${recipe.imgName}`
+      // console.log(`${recipe.imgUrl}`)
+      // console.log(`${recipe.imgName}`)
+
+      console.log(url)
+      console.log(imgName)
+
+      setSubmitted(true)
+      modifiedRecipe(url,imgName);
+
+    } else {
+      console.log('false')
       deleteImg()
       const time = new Date().getTime()
    
@@ -227,8 +250,10 @@ const authApi = useContext(AuthApi)
         })
       }
     )
-      // setSubmitted(true)
-      // modifiedRecipe();
+      setSubmitted(true)
+      modifiedRecipe();
+    }
+    
     }
   
   return (
@@ -258,7 +283,6 @@ const authApi = useContext(AuthApi)
               {/* {submitted && values.recipeName==='' ? <span>Please enter Recipe Name</span> : null} */}
             </Grid>
             <Grid item xs={12}>
-
             {/* <img src='http://via.placeholder.com/200x200'/> */}
             {!img ? 
             (<img src={recipe.imgUrl} style = {{width:'200px'}, {height:'200px'}}/>)
