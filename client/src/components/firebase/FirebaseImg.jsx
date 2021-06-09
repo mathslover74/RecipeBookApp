@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import {storage} from "../firebase/index"
 
 
@@ -10,7 +10,6 @@ export default function ReactFireBaseImg() {
   const [previewImg, setPreviewImg] = useState('');
   const [progress, setProgress] = useState(0)
 
-  // const fileInputRef = useRef();
 
   useEffect(() => {
     if (img) {
@@ -34,7 +33,6 @@ export default function ReactFireBaseImg() {
   const handleUpload = () => {
     const time = new Date().getTime()
    
-    // const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
     const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
     uploadTask.on(
       "state_changed",
@@ -65,7 +63,6 @@ export default function ReactFireBaseImg() {
   const deleteImg = () => {
     const storageRef = storage.ref() 
     const imgRef = storageRef.child('images/1623059860275Lays_chips.jpeg');
-    // gs://recipeapp-react.appspot.com/images/
 
     imgRef.delete().then(()=>{
       console.log('file deleted')
@@ -92,20 +89,6 @@ export default function ReactFireBaseImg() {
     <img src='http://via.placeholder.com/200x200'/>
   )}
 
-    {/* <input 
-    type='file' 
-    style={{display: 'none'}} 
-    ref={fileInputRef} 
-    accept='image/*'
-    onChange={(event) => {
-      const file = event.target.files[0]
-      if (file && file.type.substr(0,5) === 'image') {
-        setImg(file);
-      }else {
-        setImg(null)
-      }
-    }}
-    /> */}
 </form>
 
 

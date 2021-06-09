@@ -4,7 +4,6 @@ import 'firebase/storage'
 const ApiKey = process.env.ApiKey
 const Authdomain = process.env.Authdomain
 const ProjectId = process.env.ProjectId
-const StorageBucket = process.env.StorageBucket
 const MessagingSenderId = process.env.MessagingSenderId
 const AppId = process.env.AppId
 const MeasurementId = process.env.MeasurementId

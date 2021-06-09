@@ -38,7 +38,6 @@ router.post("/signin", async (req, res) => {
       auth: false,
     });
   }
-  console.log(user);
 });
 
 router.post("/signup", (req, res) => {

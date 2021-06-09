@@ -6,33 +6,7 @@ import Button from '@material-ui/core/Button';
 
 function MyRecipe() {
 
-  useEffect(()=> {
-    getUserRecipe()
-  },[])
-
-  const [recipes, setRecipes] = useState('');
-  const [UserID, setUserID] = useState('')
-  const [Username, setUsername] = useState('')
-
-  const checkUserID = async () => {
-    return axios.get('/users/profile/')
-    .then((res) => {
-      setUserID(res.data)
-      return res.data
-    })
-    
-  }
-
-
-  const checkUsername = async (id) => {
-    return axios.get(`/users/profile/${id}/`)
-    .then((res) => {
-      setUsername(res.data.username)
-      return res.data.username 
-    })
-  }
-
-    const getUserRecipe = async () => {
+  const getUserRecipe = async () => {
     try {
       let userid = await checkUserID()
       let username = await checkUsername(userid)
@@ -45,6 +19,29 @@ function MyRecipe() {
     }
   }
 
+  useEffect(()=> {
+    getUserRecipe()
+  })
+
+  const [recipes, setRecipes] = useState('');
+  const [UserID, setUserID] = useState('')
+  const [Username, setUsername] = useState('')
+
+  const checkUserID = async () => {
+    return axios.get('/users/profile/')
+    .then((res) => {
+      setUserID(res.data)
+      return res.data
+    })
+  }
+
+  const checkUsername = async (id) => {
+    return axios.get(`/users/profile/${id}/`)
+    .then((res) => {
+      setUsername(res.data.username)
+      return res.data.username 
+    })
+  }
 
   return(
     <div>

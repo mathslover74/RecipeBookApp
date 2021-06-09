@@ -124,7 +124,6 @@ const fetchOneRecipe = async () => {
       const imgName = `${recipe.imgName}`
       setSubmitted(true)
       modifiedRecipe(url,imgName);
-      console.log(`${recipe.imgName}` === 'sample picture')
 
     } else {
        if (`${recipe.imgName}` === 'sample picture') {
@@ -194,9 +193,9 @@ const fetchOneRecipe = async () => {
             </Grid>
             <Grid item xs={12}>
             {!img ? 
-            (<img src={recipe.imgUrl} style = {{width:'200px'}, {height:'200px'}}/>)
+            (<img src={recipe.imgUrl} style = {{width:'200px'}, {height:'200px'}} alt='img'/>)
             : 
-            (<img src={previewImg} style = {{width:'200px'}, {height:'200px'}} />)
+            (<img src={previewImg} style = {{width:'200px'}, {height:'200px'}} alt='img'/>)
             }
             <input type='file' accept='image/*' onChange={handleChangeImg} />
             </Grid>
