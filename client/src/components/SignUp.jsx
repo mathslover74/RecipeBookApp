@@ -18,7 +18,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      JiakSimi
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -131,7 +131,7 @@ export default function SignUp() {
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
+      <Box mt={8}>
         <Copyright />
       </Box>
     </Container>
