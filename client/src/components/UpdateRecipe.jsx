@@ -55,8 +55,9 @@ const classes = useStyles();
 const authApi = useContext(AuthApi)
 
   useEffect(()=>{
-    // console.log(JSON.stringify({id}))
     fetchOneRecipe();
+    console.log('use effect')
+    console.log(recipe.imgUrl)
     if (img) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -88,6 +89,7 @@ const authApi = useContext(AuthApi)
       // console.log(res.data)
       getRecipe(res.data)
       console.log(res.data.imgUrl)
+      console.log(recipe.imgUrl)
       // setImg(res.data.imgUrl)
 
     })
@@ -189,6 +191,7 @@ const authApi = useContext(AuthApi)
   
   const handleSubmit = (event) => {
     event.preventDefault();
+    // if ({setImg})
       deleteImg()
       const time = new Date().getTime()
    

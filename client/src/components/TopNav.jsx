@@ -131,7 +131,7 @@ useEffect(()=>{
           </Link>
         } */}
 
-          <Typography variant="h6" className={classes.title} justify>
+          <Typography variant="h6" className={classes.title}>
           
           </Typography>
 

@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import AuthApi from '../utils/AuthAPI';
+import { parse } from 'dotenv';
 const axios = require('axios');
 
 
@@ -49,10 +50,11 @@ export default function NewRecipe({match}) {
   const authApi = React.useContext(AuthApi);
 
   const [submitted, setSubmitted] = useState(false)
+  const [sameImg, setSameImg] = useState(true)
   const [img, setImg] = useState(null)
   const [url, setUrl] = useState()
   const [imgName, setImgName] = useState()
-  const [previewImg, setPreviewImg] = useState('');
+  const [previewImg, setPreviewImg] = useState('http://via.placeholder.com/200x200');
   const [values, setValues] = useState( {
     recipeName:'',
     imgUrl:'',
@@ -73,17 +75,25 @@ export default function NewRecipe({match}) {
 
   useEffect(() => {
     fetchUserData()
+    
     if (img) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImg(reader.result)
+        setSameImg(false)
         
       }
       reader.readAsDataURL(img);
     }else {
-      setPreviewImg(null)
+
+      // setValues(prevState => ({...prevState, imgName : 'Sample image'}))
+      // setValues(prevState => ({...prevState, imgUr : 'http://via.placeholder.com/200x200'}))
+      // setPreviewImg(null)
+      // console.log(`${values.imgName}`)
+      // setPreviewImg('http://via.placeholder.com/200x200')
     }
   },[img])
+  console.log({previewImg})
 
   const handleChangeImg = e  => {
     if (e.target.files[0]){
@@ -260,45 +270,55 @@ export default function NewRecipe({match}) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-      // if(values.recipeName){
-      //   setValid(true)
-      // } 
-      const time = new Date().getTime()
-   
-    // const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
-    const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
-    uploadTask.on(
-      "state_changed",
-      snapshot => {
-        const name = `${time}${img.name}`
-        setImgName(name)
-        // setValues.imgName(name)
-        setValues(prevState => ({...prevState, imgName : name}))
-        // setValues.imgName(name)
-        console.log(name) 
-      },
-      error => {
-        console.log(error)
-      },
-      () => {
-        
-        storage
-        .ref("images")
-        .child(`${time}${img.name}`)
-        .getDownloadURL()
-        .then(url => {
-          console.log(url)
-          setUrl(url)
-          // setValues.imgUrl(url)
-          setValues(prevState => ({...prevState, imgUrl : url}))
-          setSubmitted(true)
-          addRecipe(url,(`${time}${img.name}`));
-          console.log(values)
-          // setValues.imgUrl(url)
-        })
-      }
-    )
-      // handleUpload()
+    console.log(`${sameImg}`)
+
+      const sampleURL = '"http://via.placeholder.com/200x200"'
+      console.log(`${values.imgUrl}`)
+      console.log(sampleURL)
+ 
+      console.log(`${sameImg}` === 'true' )
+
+      if (`${sameImg}` === 'true') {
+        setSubmitted(true)
+        const sampleUrlName = 'sample picture'
+        const sampleImgURL = "http://via.placeholder.com/200x200"
+
+        addRecipe(sampleImgURL,sampleUrlName);
+        } else {
+          const time = new Date().getTime()
+      
+          // const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+          const uploadTask = storage.ref(`images/${time}${img.name}`).put(img);
+          uploadTask.on(
+            "state_changed",
+            snapshot => {
+              const name = `${time}${img.name}`
+              setImgName(name)
+              setValues(prevState => ({...prevState, imgName : name}))
+              console.log(name) 
+            },
+            error => {
+              console.log(error)
+            },
+            () => {
+              
+              storage
+              .ref("images")
+              .child(`${time}${img.name}`)
+              .getDownloadURL()
+              .then(url => {
+                console.log(url)
+                setUrl(url)
+                setValues(prevState => ({...prevState, imgUrl : url}))
+                setSubmitted(true)
+                addRecipe(url,(`${time}${img.name}`));
+                console.log(values)
+              })
+            }
+          )
+        }
+
+
       // setSubmitted(true)
       // addRecipe();
       // console.log({recipeName})
@@ -329,11 +349,12 @@ export default function NewRecipe({match}) {
             </Grid>
 
             <Grid item xs={12}>
-            { previewImg ? (
+            <img src={previewImg} style = {{width:'200px'}, {height:'200px'}} />
+            {/* { previewImg ? (
               <img src={previewImg} style = {{width:'200px'}, {height:'200px'}} />
             ): (
               <img src='http://via.placeholder.com/200x200'/>
-            )}
+            )} */}
             <input type='file' accept='image/*' onChange={handleChangeImg} />
               {/* <TextField
                 variant="outlined"
