@@ -106,24 +106,24 @@ export default function MyRecipes({recipes}) {
 
       <Box display='flex' flexWrap='wrap' >
         {recipes && recipes.map((recipe,index) =>
-        <Box p={1} width='30%' > 
-          <Card className={classes.root}>
+        <Box  key = {`My${index}._id`} p={1} width='30%' > 
+          <Card  key = {`MyCard${index}._id`}className={classes.root}>
           {/* <CardActionArea href={`/recipe/60b4ee39107017402d582fa2`} > */}
           {/* <CardActionArea href=`/recipe/${recipe._id}` > */}
 
 
           {/* <Link key={`${index}_id`} to={`/recipe/${recipe._id}`} component={CardActionArea}> */}
-          <CardActionArea component={Link} to={`/recipe/${recipe._id}`} >
+          <CardActionArea key = {`MyCardAction${index}._id`} component={Link} to={`/recipe/${recipe._id}`} >
           {/* <CardActionArea href={`/recipe/${recipe._id}/`}> */}
           {/* <Link key={`${index}_id`} to={`/recipe/${recipe._id}`}>{recipe.recipeName} </Link> */}
           <h2>{recipe.recipeName} </h2>
           {/* <Link key={`${index}_id`} to={`/recipe/${recipe._id}`}>{recipe.recipeName} </Link> */}
-          <CardHeader
+          <CardHeader key = {`MyHeader${index}._id`}
             subheader = {`Created by ${recipe.createdBy}`}
             // subheader = "by" {recipe.createBy}
           />
           {/* <img src='http://via.placeholder.com/200x200'/> */}
-          <CardMedia
+          <CardMedia key = {`MyMedia${index}._id`}
             className={classes.media}
             
             // image="http://via.placeholder.com/200x200"

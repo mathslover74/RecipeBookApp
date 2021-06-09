@@ -50,15 +50,12 @@ useEffect(()=>{
 
   const checkSignIn = async () => {
     const res = await axios.get('/users/hassign/')
-    console.log(res.data)
     setSignIn(res.data.auth)
   }
 
   const checkUserID = async () => {
     const res = await axios.get('/users/profile/')
-    console.log(res)
     setUserID(res.data)
-    console.log(UserID)
     
     // const superUser = await res.json();
     // setSuperUser(superUser)
@@ -76,7 +73,6 @@ useEffect(()=>{
     // const res = await axios.get(id)
     // const res = await axios.get(`/users/profile/60b7910b2857d061a8ba8a8d/`)
     const res = await axios.get(`/users/profile/${UserID}/`)
-    console.log(res.data)
     setSuperUser(res.data.superUser)
   }
 
@@ -108,8 +104,8 @@ useEffect(()=>{
           <Button href='/signin' color="inherit"><span id ='fonts'>JiakSiMe?</span></Button>
         }
           {navigation.map((n, index) => (
-            n.display && <Link to={n.path}>
-              <Button style={{color: 'rgba(255,255,255)'}} > {n.title} </Button>
+            n.display && <Link to={n.path} key = {`L${index}._id`}>
+              <Button key = {`R${index}._id`} style={{color: 'rgba(255,255,255)'}} > {n.title} </Button>
             </Link>
           ))}
           {/* {SignIn &&

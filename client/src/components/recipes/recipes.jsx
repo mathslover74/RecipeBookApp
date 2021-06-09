@@ -93,8 +93,8 @@ export default function Recipes({recipes}) {
 
       <Box display='flex' flexWrap='wrap'>
         {recipes && recipes.map((recipe,index) =>
-        <Box p={1} width='30%'>
-          <Card className={classes.root}>
+        <Box key ={recipe._id} p={1} width='30%'>
+          <Card key = {`${index}._id`}className={classes.root}>
           {/* <CardActionArea href={`/recipe/60b4ee39107017402d582fa2`} > */}
           {/* <CardActionArea href=`/recipe/${recipe._id}` > */}
           
@@ -102,15 +102,15 @@ export default function Recipes({recipes}) {
            */}
 
            {SuperUser ?
-             <CardActionArea component={Link} to={`/recipe/${recipe._id}`}>
+             <CardActionArea key = {`Super${index}._id`} component={Link} to={`/recipe/${recipe._id}`}>
                <h2>{recipe.recipeName}</h2>
                {/* <Link key={`${index}_id`} to={`/recipe/${recipe._id}`}>{recipe.recipeName} </Link>  */}
-                <CardHeader
+                <CardHeader key = {`SuperCard${index}._id`}
                   // title = {recipe.recipeName}
                   // subheader = {recipe._id}
                   subheader = {`Created by ${recipe.createdBy}`}
                 />
-                <CardMedia
+                <CardMedia key = {`SuperMedia${index}._id`}
                   className={classes.media}
                   // image="http://via.placeholder.com/200x200"
                   image= {recipe.imgUrl}
@@ -119,15 +119,15 @@ export default function Recipes({recipes}) {
                 />
              </CardActionArea>
              :
-             <CardActionArea component={Link} to={`/viewrecipe/${recipe._id}`}>
+             <CardActionArea key = {`Norm${index}._id`} component={Link} to={`/viewrecipe/${recipe._id}`}>
                <h2>{recipe.recipeName}</h2>
              {/* <Link key={`${index}_id`} to={`/viewrecipe/${recipe._id}`}>{recipe.recipeName} </Link>  */}
-              <CardHeader
+              <CardHeader key = {`NormCard${index}._id`}
                 // title = {recipe.recipeName}
                 // subheader = {recipe._id}
                 subheader = {`Created by ${recipe.createdBy}`}
               />
-              <CardMedia
+              <CardMedia key = {`NormMedia${index}._id`}
                 className={classes.media}
                 // image="http://via.placeholder.com/200x200"
                 image= {recipe.imgUrl}
