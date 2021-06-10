@@ -55,9 +55,9 @@ db.on("disconnected", () => console.log("mongo disconnected"));
 //Routes
 app.use("/users", usersController);
 app.use("/recipes", recipesController);
-app.get("*", (req, res) => {
-  res.status(404).json("Sorry, Page not found!");
-});
+// app.get("*", (req, res) => {
+//   res.status(404).json("Sorry, Page not found!");
+// });
 
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
