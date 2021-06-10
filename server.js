@@ -4,9 +4,8 @@ const methodOverride = require("method-override");
 const app = express();
 const session = require("express-session");
 const db = mongoose.connection;
-const bcrypt = require("bcrypt");
+const bodyParser = require("body-parser");
 require("dotenv").config();
-const users = [];
 
 // Enviroment variables
 const mongoURI = process.env.MONGODB_URI;
@@ -17,11 +16,10 @@ const path = require("path");
 const usersController = require("./controllers/users");
 const recipesController = require("./controllers/recipes");
 
-const bodyParser = require("body-parser");
-
 // Middleware
 // allows us to use put and delete methods
-app.use(express.static(path.join("client/build")));
+// app.use(express.static(path.join("client/build")));
+app.use(express.static(path.join(__dirname, "client", "build")));
 // app.use(express.static(__dirname + "/public"));
 
 app.use(methodOverride("_method"));
