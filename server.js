@@ -4,7 +4,6 @@ const methodOverride = require("method-override");
 const app = express();
 const session = require("express-session");
 const db = mongoose.connection;
-const bodyParser = require("body-parser");
 require("dotenv").config();
 
 // Enviroment variables
@@ -43,7 +42,7 @@ app.use(
 // Database
 mongoose.connect(
   mongoURI,
-  { useNewUrlParser: true, useUnifiedTopolog: true, useCreateIndex: true },
+  { useNewUrlParser: true, useUnifiedTopology: true, useUnifiedTopology: true },
   () => {
     console.log("MongoDB connection establish,");
   }
