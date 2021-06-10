@@ -20,8 +20,8 @@ const recipesController = require("./controllers/recipes");
 // allows us to use put and delete methods
 // app.use(express.static(path.join("client/build")));
 // app.use(express.static(__dirname + "/public"));
-
-app.use(express.static(path.join(__dirname, "client", "build")));
+app.use(express.static(path.join(__dirname, "../build")));
+// app.use(express.static(path.join(__dirname, "client", "build")));
 
 // if (process.env.NODE_ENV == "Heroku2") {
 //   app.use(exppress.static("client/build"));
@@ -60,8 +60,12 @@ app.get("*", (req, res) => {
   res.status(404).json("Sorry, Page not found!");
 });
 
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+// });
+
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  res.sendFile(path.join(__dirname, "../build"));
 });
 
 app.listen(PORT, () => console.log("server is running on port", PORT));
