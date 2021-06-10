@@ -33,8 +33,5 @@
     "firebase": "^8.6.5",
     "method-override": "^3.0.0",
     "mongoose": "^5.12.9"
-  },
-  "engines": {
-    "node": "10.16.0"
   }
 }
