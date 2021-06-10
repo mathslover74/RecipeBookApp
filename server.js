@@ -19,8 +19,13 @@ const recipesController = require("./controllers/recipes");
 // Middleware
 // allows us to use put and delete methods
 // app.use(express.static(path.join("client/build")));
-app.use(express.static(path.join(__dirname, "client", "build")));
 // app.use(express.static(__dirname + "/public"));
+
+app.use(express.static(path.join(__dirname, "client", "build")));
+
+// if (process.env.NODE_ENV == "Heroku2") {
+//   app.use(exppress.static("client/build"));
+// }
 
 app.use(methodOverride("_method"));
 // parses info from our input fields into an object
