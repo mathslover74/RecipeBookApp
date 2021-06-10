@@ -21,7 +21,7 @@ const bodyParser = require("body-parser");
 
 // Middleware
 // allows us to use put and delete methods
-app.use(express.static(path.join("client", "build")));
+app.use(express.static(path.join("client/build")));
 // app.use(express.static(__dirname + "/public"));
 
 app.use(methodOverride("_method"));
