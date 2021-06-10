@@ -57,8 +57,8 @@ app.get("*", (req, res) => {
   res.status(404).json("Sorry, Page not found!");
 });
 
-app.get("/*", (req, res) => {
-  res.sendFile(path.join("client", "build", "index.html"));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 app.listen(PORT, () => console.log("server is running on port", PORT));
