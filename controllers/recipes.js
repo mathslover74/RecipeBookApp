@@ -20,7 +20,6 @@ router.get("/", (req, res) => {
 router.post("/create", (req, res) => {
   Recipes.create(req.body, (err, createRecipe) => {
     res.json(createRecipe);
-    console.log(createRecipe);
   });
 });
 

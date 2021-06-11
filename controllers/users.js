@@ -2,11 +2,6 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/users");
 
-// router.get("/", (req, res) => {
-//   res.json({
-//     msg: "hello",
-//   });
-
 ///find all users
 router.get("/", (req, res) => {
   User.find({}, (err, foundUsers) => {
@@ -14,54 +9,11 @@ router.get("/", (req, res) => {
   });
 });
 
-// ///find user
-// router.get("/:id", (req, res) => {
-//   User.findById(req.params.id, (err, foundUser) => {
-//     res.json(foundUser);
-//   });
-// });
-
-// ///edit super user
-// router.put("/:id", (req, res) => {
-//   User.findByIdAndUpdate(
-//     req.params.id,
-//     req.body,
-//     { new: true },
-//     (err, updateUser) => {
-//       res.json(updateUser);
-//     }
-//   );
-// });
-
 ///get user id & name
 router.get("/profile", async (req, res) => {
-  // User.findOne({ _id: req.session.user }, "username").then((foundUser) => {
-  //   res.json(foundUser);
-  // });
   let userdata = req.session.user;
   res.json(userdata);
 });
-
-// router.get("/profile/:userid", (req, res) => {
-//   User.findById(req.params.userid, (err, foundUser) => {
-//     res.json(foundUser);
-//   });
-// });
-
-// router.get("/profile/:userid", (req, res) => {
-//   User.find({ _id: req.params.userid, superUser: true }, (err, foundUser) => {
-//     // res.json(foundUser[0].username);
-//     res.json(foundUser);
-//   });
-// });
-
-// router.get("/profile/:userid", async (req, res) => {
-//   User.findOne({ _id: req.params.userid }, "superUser").then(
-//     (foundUser) => {
-//       res.json(foundUser);
-//     }
-//   );
-// });
 
 router.get("/profile/:userid", async (req, res) => {
   User.findOne({ _id: req.params.userid }, { password: 0 }).then(
@@ -86,7 +38,6 @@ router.post("/signin", async (req, res) => {
       auth: false,
     });
   }
-  console.log(user);
 });
 
 router.post("/signup", (req, res) => {
@@ -110,9 +61,6 @@ router.post("/signup", (req, res) => {
 
 router.get("/hassign", (req, res) => {
   if (req.session.user) {
-    console.log("@@@@@@@@@@@@");
-    console.log(req.session);
-    console.log(req.session.user);
     return res.json({
       auth: true,
       message: "your are sign in",

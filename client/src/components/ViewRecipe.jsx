@@ -1,27 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
-// import {
-//   BrowserRouter as Router,
-//   Switch,
-//   Route,
-//   useParams
-// } from "react-router-dom";
-import { useParams , use} from 'react-router-dom';
-import { useHistory , Link} from 'react-router-dom';
+import { useHistory} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import CardHeader from '@material-ui/core/CardHeader';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import AuthApi from '../utils/AuthAPI';
 import TopNav from './TopNav'
 const axios = require('axios');
 
@@ -53,11 +39,10 @@ export default function ViewRecipe({match}) {
   const history = useHistory();
   const[recipe, getRecipe] = useState('');
   const [previewImg, setPreviewImg] = useState('');
-// const { id } = useParams();
+  const classes = useStyles();
 
 
   useEffect(()=>{
-    // console.log(JSON.stringify({id}))
     fetchOneRecipe();
     if (img) {
       const reader = new FileReader();
@@ -74,35 +59,14 @@ export default function ViewRecipe({match}) {
   // console.log(match.params)
 
   const fetchOneRecipe = async () => {
-    // console.log({id})
-    // axios.get(`/recipes/60abba232d26b32014c74bb1`)
     axios.get(`/recipes/${match.params.id}`)
     .then((res)=>{
-      // console.log(res.data)
       getRecipe(res.data)
     })
     .catch(err => console.log(err))
   }
   
-  
-  const classes = useStyles();
-  const authApi = useContext(AuthApi)
-  
-  
-  function handleOnChange(e){
-    getRecipe( prevState => ({ ...prevState, ...{[e.target.name] : e.target.value}}))
-  }
 
-  // const [valid, setValid]=useState(false)
-  
-  
-  
-  
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    }
-
-  
   return (
       <div>
         <TopNav/>
@@ -134,7 +98,6 @@ export default function ViewRecipe({match}) {
               {recipe.instruction}
             </Typography>
             </CardContent>
-
   
               <h3>Ingredients Required</h3>
             <Typography variant="body2" color="textSecondary" component="p">
@@ -150,7 +113,7 @@ export default function ViewRecipe({match}) {
               
             </Grid>
           </Grid> 
-  
+
           <Grid container justify="flex-end">
           </Grid>
         </form>        

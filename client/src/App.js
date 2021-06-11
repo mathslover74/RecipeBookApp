@@ -11,7 +11,6 @@ function App() {
 
   const readSession = async () => {
     const result = await hasSignned();
-    console.log(result);
     if (result.data.auth) {
       setAuth(true);
     }

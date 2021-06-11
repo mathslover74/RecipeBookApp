@@ -7,7 +7,6 @@ const signin = async (user) => {
 
 const signup = async (user) => {
   const result = await axios.post("/users/signup", user);
-  console.log(user);
   return result;
 };
 
