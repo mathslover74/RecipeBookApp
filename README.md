@@ -12,7 +12,7 @@ The Aim of this:
 - Allow users to share their home cook recipes with photo
 - Allow users to have inspiration on what to cook for a meal
 
-[Application Link](Link)
+[Application Link](https://jiaksime.herokuapp.com/signin)
 
 ## Installation
 
